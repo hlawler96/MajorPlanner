@@ -5,6 +5,7 @@ import (
     "encoding/json"
     "net/http"
     "database/sql"
+    "fmt"
 )
 import _ "github.com/go-sql-driver/mysql"
 
@@ -43,4 +44,9 @@ func getCourses(w http.ResponseWriter, r *http.Request) {
  if err := json.NewEncoder(w).Encode(courses); err != nil {
        panic(err)
    }
+}
+
+func test(w http.ResponseWriter, r *http.Request) {
+fmt.Fprintln(w, "Hello world :)")
+
 }

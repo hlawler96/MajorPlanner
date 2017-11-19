@@ -8,7 +8,7 @@ import (
 )
 import _ "github.com/go-sql-driver/mysql"
 
-func Index(w http.ResponseWriter, r *http.Request) {
+func getCourses(w http.ResponseWriter, r *http.Request) {
   //Tell Response to expect a json
   w.Header().Set("Content-Type", "application/json; charset=UTF-8")
   w.WriteHeader(http.StatusOK)

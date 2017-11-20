@@ -181,7 +181,7 @@ func testPostUserInformation(w http.ResponseWriter, r *http.Request){
   for _, dept := range user_info.DTaken {
      fmt.Println(dept.Name)
      for _, course := range dept.CoursesTaken {
-          fmt.Println(string(course.Dept) + " " + string(course.Number))
+          fmt.Println(string(course.Id) + " " + string(course.Dept) + " " + string(course.Number) + " " + string(course.Hours) + " " + string(course.Pid))
      }
   }
 

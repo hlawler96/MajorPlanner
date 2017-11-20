@@ -182,17 +182,17 @@ func testPostUserInformation(w http.ResponseWriter, r *http.Request){
 //TODO Actually store all of this information in the DB instead of just printing it
 
   fmt.Println(user_info.Id)
-  for _, dept := range user_info.DTaken {
-     fmt.Println(dept.Name)
+  for index, dept := range user_info.DTaken {
+     fmt.Println("Program " + string(index) + ": " + dept.Name)
      for _, course := range dept.CoursesTaken {
           fmt.Println(string(course.Id) + " " + string(course.Dept) + " " + string(course.Number) + " " + string(course.Hours) + " " + string(course.Pid))
      }
   }
-  for _, dept := range user_info.CurrDept {
-    fmt.Println(dept)
+  for index, dept := range user_info.CurrDept {
+    fmt.Println("Current Program " + string(index) + ": " + dept)
   }
-  fmt.Println(user_info.SemLeft)
-  fmt.Println(user_info.GenEdsLeft)
+  fmt.Println("Semesters Left: " + string(user_info.SemLeft))
+  fmt.Println("Gen Eds Left: "  + string(user_info.GenEdsLeft))
 
 }
 

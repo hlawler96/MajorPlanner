@@ -43,9 +43,15 @@ var routes = Routes{
         testGetCoursesTaken,
     },
     Route{
-        "testPostUserInformation",
+        "TestPostUserInformation",
         "POST",
         "/UserInfo/",
         testPostUserInformation,
+    },
+    Route{
+        "GetResult",
+        "GET",
+        "/PossiblePrograms/",
+        testGetResult,
     },
 }

@@ -83,7 +83,7 @@ func testLogin(w http.ResponseWriter, r *http.Request){
 }
 
 func testSignUp(w http.ResponseWriter, r *http.Request){
-
+  // example call
   //http://localhost:8080/SignUp/?name=hayden&username=hayden&password=password
 
   name, ok := r.URL.Query()["name"]
@@ -152,8 +152,7 @@ func testPostUserInformation(w http.ResponseWriter, r *http.Request){
 
   /*
   Sample Post Message Body Request
-  [{"id":1, "deptTaken":[{"name":"COMP", "coursesTaken": [{"id":1,"hours":3,"dept":"COMP","number":110,"pid":1},{"id":2,"hours":3,"dept":"COMP","number":401,"pid":1}]}]}]
-
+  {"id":1, "deptTaken":[{"name":"COMP", "coursesTaken": [{"id":"1","hours":"3","dept":"COMP","number":"110","pid":"1"},{"id":"2","hours":"3","dept":"COMP","number":"401","pid":"1"}]}, {"name":"MATH", "coursesTaken": [{"id":"1","hours":"3","dept":"MATH","number":"233","pid":"2"}]}],"currDept":["COMP", "MATH"], "semLeft": 4, "genEdsLeft": 3}
   */
 
   type DeptTaken struct{
@@ -164,8 +163,11 @@ func testPostUserInformation(w http.ResponseWriter, r *http.Request){
   type DeptsTaken []DeptTaken
 
   type UserInfo struct {
-    Id        int           `json:"id"`
-    DTaken    DeptsTaken    `json:"deptTaken"`
+    Id         int           `json:"id"`
+    DTaken     DeptsTaken    `json:"deptTaken"`
+    CurrDept   []string      `json:"currDept"`
+    SemLeft    int           `json:"semLeft"`
+    GenEdsLeft int           `json:"genEdsLeft"`
   }
 
   decoder := json.NewDecoder(r.Body)
@@ -177,6 +179,8 @@ func testPostUserInformation(w http.ResponseWriter, r *http.Request){
 		panic(err)
 	}
 
+//TODO Actually store all of this information in the DB instead of just printing it
+
   fmt.Println(user_info.Id)
   for _, dept := range user_info.DTaken {
      fmt.Println(dept.Name)
@@ -184,5 +188,21 @@ func testPostUserInformation(w http.ResponseWriter, r *http.Request){
           fmt.Println(string(course.Id) + " " + string(course.Dept) + " " + string(course.Number) + " " + string(course.Hours) + " " + string(course.Pid))
      }
   }
+  for _, dept := range user_info.CurrDept {
+    fmt.Println(dept)
+  }
+  fmt.Println(user_info.SemLeft)
+  fmt.Println(user_info.GenEdsLeft)
+
+}
+
+
+func testGetResult(w http.ResponseWriter, r *http.Request){
+  id, ok := r.URL.Query()["id"]
+  if !ok || len(id) < 1 {
+       fmt.Fprintln(w, "Url Param 'id' is missing")
+       return
+   }
+
 
 }

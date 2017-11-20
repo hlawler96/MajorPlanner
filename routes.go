@@ -13,15 +13,39 @@ type Routes []Route
 
 var routes = Routes{
     Route{
-        "Index",
+        "Course",
         "GET",
         "/Courses",
         getCourses,
     },
     Route{
-        "Index",
+        "Test",
         "GET",
         "/",
         test,
+    },
+    Route{
+        "TestLogin",
+        "GET",
+        "/Login/",
+        testLogin,
+    },
+    Route{
+        "TestSignUp",
+        "GET",
+        "/SignUp/",
+        testSignUp,
+    },
+    Route{
+        "TestGetCoursesTaken",
+        "GET",
+        "/CoursesTaken/",
+        testGetCoursesTaken,
+    },
+    Route{
+        "testPostUserInformation",
+        "POST",
+        "/UserInfo/",
+        testPostUserInformation,
     },
 }

@@ -133,11 +133,11 @@ func testGetCoursesTaken(w http.ResponseWriter, r *http.Request){
 
     //TODO Actually return courses user has taken
      courses = Courses{
-     Course {1, 3, "COMP", 110, 1,},
-     Course {2, 3, "COMP", 401, 1,},
-     Course {3, 3, "COMP", 410, 1,},
-     Course {4, 3, "COMP", 411, 1,},
-     Course {5, 3, "MATH", 233, 2,},
+     Course {"1", "3", "COMP", "110", "1",},
+     Course {"2", "3", "COMP", "401", "1",},
+     Course {"3", "3", "COMP", "410", "1",},
+     Course {"4", "3", "COMP", "411", "1",},
+     Course {"5", "3", "MATH", "233", "2",},
    }
  }
 

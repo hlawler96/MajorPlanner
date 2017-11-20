@@ -3,11 +3,11 @@ package main
 
 
 type Course struct {
-  Id      int     `json:"id"`
-  Hours   int     `json:"hours"`
+  Id      string    `json:"id"`
+  Hours   string     `json:"hours"`
   Dept    string  `json:"dept"`
-  Number  int     `json:"number"`
-  Pid     int     `json:"pid"`
+  Number  string     `json:"number"`
+  Pid     string     `json:"pid"`
 }
 //brahm testing github desktop
 

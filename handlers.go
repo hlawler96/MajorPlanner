@@ -152,12 +152,17 @@ func testPostUserInformation(w http.ResponseWriter, r *http.Request){
 
   /*
   Sample Post Message Body Request
-  {"id":1, "deptTaken":[{"name":"COMP", "coursesTaken": [{"id":"1","hours":"3","dept":"COMP","number":"110","pid":"1"},{"id":"2","hours":"3","dept":"COMP","number":"401","pid":"1"}]}, {"name":"MATH", "coursesTaken": [{"id":"1","hours":"3","dept":"MATH","number":"233","pid":"2"}]}],"currDept":["COMP", "MATH"], "semLeft": 4, "genEdsLeft": 3}
+  {"id":1, "deptTaken":[{"name":"COMP", "coursesTaken": [{"dept":"COMP","number":"110"},{"dept":"COMP","number":"401"}]}, {"name":"MATH", "coursesTaken": [{"dept":"MATH","number":"233"}]}],"currDept":["COMP", "MATH"], "semLeft": 4, "genEdsLeft": 3}
   */
+  type AbvCourse struct {
+    Dept    string    `json:"dept"`
+    Number  int       `json:"number"`
+  }
+  type AbvCourses []AbvCourse
 
   type DeptTaken struct{
     Name            string    `json:"name"`
-    CoursesTaken    Courses   `json:"coursesTaken"`
+    CoursesTaken    AbvCourses   `json:"coursesTaken"`
   }
 
   type DeptsTaken []DeptTaken
@@ -185,7 +190,7 @@ func testPostUserInformation(w http.ResponseWriter, r *http.Request){
   for index, dept := range user_info.DTaken {
      fmt.Println("Program " + string(index) + ": " + dept.Name)
      for _, course := range dept.CoursesTaken {
-          fmt.Println(string(course.Id) + " " + string(course.Dept) + " " + string(course.Number) + " " + string(course.Hours) + " " + string(course.Pid))
+          fmt.Println(course.Dept, course.Number)
      }
   }
   for index, dept := range user_info.CurrDept {

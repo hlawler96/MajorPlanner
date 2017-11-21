@@ -133,11 +133,11 @@ func testGetCoursesTaken(w http.ResponseWriter, r *http.Request){
 
     //TODO Actually return courses user has taken
      courses = Courses{
-     Course {"1", "3", "COMP", "110", "1",},
-     Course {"2", "3", "COMP", "401", "1",},
-     Course {"3", "3", "COMP", "410", "1",},
-     Course {"4", "3", "COMP", "411", "1",},
-     Course {"5", "3", "MATH", "233", "2",},
+     Course {1, 3, "COMP", 110, 1,},
+     Course {2, 3, "COMP", 401, 1,},
+     Course {3, 3, "COMP", 410, 1,},
+     Course {4, 3, "COMP", 411, 1,},
+     Course {5, 3, "MATH", 233, 2,},
    }
  }
 
@@ -148,8 +148,6 @@ func testGetCoursesTaken(w http.ResponseWriter, r *http.Request){
 }
 
 func testPostUserInformation(w http.ResponseWriter, r *http.Request){
-
-
   /*
   Sample Post Message Body Request
   {"id":1, "deptTaken":[{"name":"COMP", "coursesTaken": [{"dept":"COMP","number":"110"},{"dept":"COMP","number":"401"}]}, {"name":"MATH", "coursesTaken": [{"dept":"MATH","number":"233"}]}],"currDept":["COMP", "MATH"], "semLeft": 4, "genEdsLeft": 3}
@@ -208,6 +206,42 @@ func testGetResult(w http.ResponseWriter, r *http.Request){
        fmt.Fprintln(w, "Url Param 'id' is missing")
        return
    }
+   type LooseReqCourse struct {
+     ReqCourse     Course     `json:"course"`
+     Requirement   string     `json:"requirement"`
+   }
+   type LooseReqCourses []LooseReqCourse
+
+   type Prereqs []Courses
+
+   type PossibleProgram struct {
+     Name                    string           `json:"name"`
+     AvgHoursPerSem          float32          `json:"avgHoursPerSem"`
+     StrictRemainingCourses  Courses          `json:"strictRemainingCourses"`
+     LooseRemainingCourses   LooseReqCourses  `json:"looseRemainingCourses"`
+     OrderOfPrereqs          Prereqs          `json:"orderOfPrereqs"`
+   }
+
+   type PossiblePrograms []PossibleProgram
+
+   type Result struct {
+     Id                         string              `json:"id"`
+     StrictRemainingCourses     Courses             `json:"strictRemainingCourses"`
+     LooseRemainingCourses      LooseReqCourses     `json:"looseRemainingCourses"`
+     PossibleProg               PossiblePrograms    `json:"PossiblePrograms"`
+  }
+
+  res := Result{
+    Id : id[0] ,
+    StrictRemainingCourses: Courses{Course{1, 3, "COMP", 550, 1}, Course{2, 3, "COMP", 455, 1}},
+    LooseRemainingCourses: LooseReqCourses{{Course{3, 3, "COMP", 426, 1},"Greater than or equal to - 426"}, {Course{4, 3, "COMP", 433, 1}, "Greater than or equal to - 426"}},
+    PossibleProg: PossiblePrograms{PossibleProgram{"MATH", 14.333, Courses{Course{4,3,"MATH", 547, 2}, Course{5,3,"MATH",521, 2}}, LooseReqCourses{LooseReqCourse{Course{5,3,"MATH", 528, 2}, "Greater than or equal to - 500"}},
+    Prereqs{Courses{Course{6,3,"MATH", 231, 2},Course{7,3,"MATH",232,2}}, Courses{Course{7,3,"MATH", 232, 2}, Course{8,3,"MATH",233,2}}}},
+  }}
+
+  if err := json.NewEncoder(w).Encode(res); err != nil {
+        panic(err)
+    }
 
 
-}
+  }

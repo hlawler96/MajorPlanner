@@ -52,6 +52,12 @@ var routes = Routes{
         "GetResult",
         "GET",
         "/PossiblePrograms/",
-        testGetResult,
+        GetResult,
+    },
+    Route{
+        "GetUserInfo",
+        "GET",
+        "/UserInfo/",
+        GetUserInfo,
     },
 }

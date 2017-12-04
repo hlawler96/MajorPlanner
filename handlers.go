@@ -315,7 +315,7 @@ func PostUserInformation(w http.ResponseWriter, r *http.Request){
   	}
 }
 
-func testGetResult(w http.ResponseWriter, r *http.Request){
+func GetResult(w http.ResponseWriter, r *http.Request){
   sessionId, ok := r.URL.Query()["sessionId"]
   if !ok || len(sessionId) < 1 {
        fmt.Fprintln(w, "Url Param 'sessionId' is missing")
@@ -655,6 +655,39 @@ func testGetResult(w http.ResponseWriter, r *http.Request){
 
 
   }
+
+func GetUserInfo(w http.ResponseWriter, r *http.Request){
+  sessionId, ok := r.URL.Query()["sessionId"]
+  if !ok || len(sessionId) < 1 {
+       fmt.Fprintln(w, "Url Param 'sessionId' is missing")
+       return
+   }
+   //connect to db
+   db, err := sql.Open("mysql", "mason:pineappleB2@tcp(comp426finalproject.cqu5t9sfyvwq.us-east-2.rds.amazonaws.com:3306)/planner" )
+  if err != nil {
+    log.Fatal(err)
+  }
+  type User struct{
+    Id         int     `json:"id"`
+    Username   string  `json:"username"`
+    SemLeft    int     `json:"semLeft"`
+    GenEdsLeft int     `json:"genEdsLeft"`
+    ProgramOne string  `json:"programOne"`
+    ProgramTwo string  `json:"programTwo"`
+  }
+  usr := new(User)
+  str := "SELECT U.id, U.user, U.semLeft, U.genEdsLeft, U.programOne, U.programTwo from Users U, UserSessions US WHERE US.uid = U.id and US.sessionId = ?"
+  err = db.QueryRow(str , sessionId[0]).Scan(&usr.Id, &usr.Username, &usr.SemLeft, &usr.GenEdsLeft, &usr.ProgramOne, &usr.ProgramTwo)
+  if err != nil {
+    log.Fatal(err)
+  }
+
+  if err := json.NewEncoder(w).Encode(usr); err != nil {
+        panic(err)
+    }
+
+}
+
 
 //helper methods below for generating user Session string
 var src = rand.NewSource(time.Now().UnixNano())

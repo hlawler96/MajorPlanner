@@ -130,7 +130,15 @@ The following code represents the object structure in go that is converted to th
 
 An example result of this query is :
 ```
-{"sessionId":"jwGzoQQUmGmONbpqnDBPJeOrncVHbv","strictRemainingCourses":[{"id":1,"hours":3,"number":550,"dept":"COMP"},{"id":2,"hours":3,"number":455,"dept":"COMP"}],"looseRemainingCourses":[{"course":{"id":3,"hours":3,"number":426,"dept":"COMP"},"requirement":"Greater than or equal to - 426","number":6},{"course":{"id":4,"hours":3,"number":433,"dept":"COMP"},"requirement":"Greater than or equal to - 426","number":6}],"PossiblePrograms":[{"dept":"MATH","type":"BA","avgHoursPerSem":14.333,"strictRemainingCourses":[{"id":4,"hours":3,"number":547,"dept":"MATH"},{"id":5,"hours":3,"number":521,"dept":"MATH"}],"looseRemainingCourses":[{"course":{"id":5,"hours":3,"number":528,"dept":"MATH"},"requirement":"Greater than or equal to - 500"},"number":5],"orderOfPrereqs":[[{"id":6,"hours":3,"number":231,"dept":"MATH"},{"id":7,"hours":3,"number":232,"dept":"MATH"}],[{"id":7,"hours":3,"number":232,"dept":"MATH"},{"id":8,"hours":3,"number":233,"dept":"MATH"}]]}]}
+{"sessionId":"jwGzoQQUmGmONbpqnDBPJeOrncVHbv","strictRemainingCourses":[{"id":1,"hours":3,"number":550,"dept":"COMP"},
+{"id":2,"hours":3,"number":455,"dept":"COMP"}],"looseRemainingCourses":[{"course":
+{"id":3,"hours":3,"number":426,"dept":"COMP"},"requirement":"Greater than or equal to - 426","number":6},{"course":
+{"id":4,"hours":3,"number":433,"dept":"COMP"},"requirement":"Greater than or equal to - 426","number":6}],"PossiblePrograms":
+[{"dept":"MATH","type":"BA","avgHoursPerSem":14.333,"strictRemainingCourses":[{"id":4,"hours":3,"number":547,"dept":"MATH"},
+{"id":5,"hours":3,"number":521,"dept":"MATH"}],"looseRemainingCourses":[{"course":
+{"id":5,"hours":3,"number":528,"dept":"MATH"},"requirement":"Greater than or equal to - 500"},"number":5],"orderOfPrereqs":
+[[{"id":6,"hours":3,"number":231,"dept":"MATH"},{"id":7,"hours":3,"number":232,"dept":"MATH"}],
+[{"id":7,"hours":3,"number":232,"dept":"MATH"},{"id":8,"hours":3,"number":233,"dept":"MATH"}]]}]}
 ```
 ## POST API Calls
 

@@ -74,7 +74,7 @@ Where USERNAME and PASSWORD are replaced with new usernames and passwords. This 
 Use `[hostname]:8080/CoursesTaken/?sessionId=SESSIONID`
 Where SESSIONID is replaced by the sessionId you recieved at login. This returns an array of Course objects that the given user has already taken.
 
-### Provide Server Info
+### User Info
 Use `[hostname]:8080/UserInfo/sessionId=SESSIONID`
 Where SESSIONID is replaced by the sessionId you recieved at login. This returns information about the user profile including 
 - id

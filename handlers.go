@@ -652,9 +652,8 @@ func GetResult(w http.ResponseWriter, r *http.Request){
   if err := json.NewEncoder(w).Encode(res); err != nil {
         panic(err)
     }
-
-
   }
+
 
 func GetUserInfo(w http.ResponseWriter, r *http.Request){
   sessionId, ok := r.URL.Query()["sessionId"]
@@ -685,9 +684,7 @@ func GetUserInfo(w http.ResponseWriter, r *http.Request){
   if err := json.NewEncoder(w).Encode(usr); err != nil {
         panic(err)
     }
-
 }
-
 
 //helper methods below for generating user Session string
 var src = rand.NewSource(time.Now().UnixNano())

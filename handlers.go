@@ -37,14 +37,14 @@ func getCourses(w http.ResponseWriter, r *http.Request) {
   defer rows.Close()
 
 
- courses := make([]*CourseDept, 0)
+ courses := make([]Course, 0)
   for rows.Next() {
-    crs := new(CourseDept)
-    err := rows.Scan(&crs.Id, &crs.Hours, &crs.Number, &crs.dept)
+    crs := new(Course)
+    err := rows.Scan(&crs.Id, &crs.Hours, &crs.Number, &crs.Program)
     if err != nil {
       log.Fatal(err)
     }
-    courses = append(courses, crs)
+    courses = append(courses, *crs)
   }
   if err = rows.Err(); err != nil {
     log.Fatal(err)
@@ -116,11 +116,6 @@ func SignUp(w http.ResponseWriter, r *http.Request){
   // example call
   //http://localhost:8080/SignUp/?name=hayden&username=hayden&password=password
 
-  name, ok := r.URL.Query()["name"]
-  if !ok || len(name) < 1 {
-      fmt.Fprintln(w, "Url Param 'name' is missing")
-       return
-   }
 
   user, ok := r.URL.Query()["username"]
   if !ok || len(user) < 1 {
@@ -145,7 +140,7 @@ func SignUp(w http.ResponseWriter, r *http.Request){
   }
 
   // Prepare statement for inserting data
-	stmtInsUser, err := db.Prepare("INSERT INTO Users (user, pass, name) VALUES (?,?,?)")
+	stmtInsUser, err := db.Prepare("INSERT INTO Users (user, pass) VALUES (?,?)")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -163,7 +158,7 @@ func SignUp(w http.ResponseWriter, r *http.Request){
   switch  {
     //username isn't taken, insert info into db
   case err == sql.ErrNoRows:
-      _, err = stmtInsUser.Exec(user[0],pass[0],name[0])
+      _, err = stmtInsUser.Exec(user[0],pass[0])
 
       err = db.QueryRow("SELECT U.id FROM Users U WHERE U.user = ?", user[0]).Scan(&id)
       if err != nil {
@@ -204,7 +199,7 @@ func GetCoursesTaken(w http.ResponseWriter, r *http.Request){
   }
 
    //get courses that a specific user has taken
-   str := "SELECT C.id, C.creditHours, C.cNumber, C.pid FROM Courses C, CoursesTaken CT, UserSessions US WHERE C.id = CT.cid and CT.uid = US.uid and US.sessionId = ?"
+   str := "SELECT C.id, C.creditHours, C.cNumber, P.dept FROM Courses C, CoursesTaken CT, UserSessions US, Program P WHERE C.id = CT.cid and CT.uid = US.uid and US.sessionId = ? and C.pid = P.id"
    rows, err := db.Query(str, sessionId[0])
    if err != nil {
      log.Fatal(err)
@@ -212,14 +207,14 @@ func GetCoursesTaken(w http.ResponseWriter, r *http.Request){
    defer rows.Close()
 
    //go through sql result and add them to list
-   courses := make([]*Course, 0)
+   courses := make([]Course, 0)
     for rows.Next() {
       crs := new(Course)
-      err := rows.Scan(&crs.Id, &crs.Hours, &crs.Number, &crs.Pid)
+      err := rows.Scan(&crs.Id, &crs.Hours, &crs.Number, &crs.Program)
       if err != nil {
         log.Fatal(err)
       }
-      courses = append(courses, crs)
+      courses = append(courses, *crs)
     }
     if err = rows.Err(); err != nil {
       log.Fatal(err)
@@ -234,7 +229,7 @@ func GetCoursesTaken(w http.ResponseWriter, r *http.Request){
 func PostUserInformation(w http.ResponseWriter, r *http.Request){
   /*
   Sample Post Message Body Request
-  {"sessionId":1, "deptTaken":[{"name":"COMP", "coursesTaken": [{"dept":"COMP","number":"110"},{"dept":"COMP","number":"401"}]}, {"name":"MATH", "coursesTaken": [{"dept":"MATH","number":"233"}]}],"currDept":[{"COMP","BS"},{"MATH","Minor"}], "semLeft": 4, "genEdsLeft": 3}
+  {"sessionId":jwGzoQQUmGmONbpqnDBPJeOrncVHbv, "deptTaken":[{"name":"COMP", "coursesTaken": [{"dept":"COMP","number":"110"},{"dept":"COMP","number":"401"}]}, {"name":"MATH", "coursesTaken": [{"dept":"MATH","number":"233"}]}],"currDept":[{"COMP","BS"},{"MATH","Minor"}], "semLeft": 4, "genEdsLeft": 3}
   */
   type AbvCourse struct {
     Dept    string    `json:"dept"`
@@ -316,45 +311,338 @@ func PostUserInformation(w http.ResponseWriter, r *http.Request){
 }
 
 func testGetResult(w http.ResponseWriter, r *http.Request){
-  id, ok := r.URL.Query()["id"]
-  if !ok || len(id) < 1 {
-       fmt.Fprintln(w, "Url Param 'id' is missing")
+  sessionId, ok := r.URL.Query()["sessionId"]
+  if !ok || len(sessionId) < 1 {
+       fmt.Fprintln(w, "Url Param 'sessionId' is missing")
        return
    }
    type LooseReqCourse struct {
      ReqCourse     Course     `json:"course"`
      Requirement   string     `json:"requirement"`
+     Number        int        `json:"number"`
    }
-   type LooseReqCourses []LooseReqCourse
-
-   type Prereqs []Courses
 
    type PossibleProgram struct {
-     Name                    string           `json:"name"`
+     Dept                    string           `json:"dept"`
+     Type                    string           `json:"type"`
      AvgHoursPerSem          float32          `json:"avgHoursPerSem"`
      StrictRemainingCourses  Courses          `json:"strictRemainingCourses"`
-     LooseRemainingCourses   LooseReqCourses  `json:"looseRemainingCourses"`
-     OrderOfPrereqs          Prereqs          `json:"orderOfPrereqs"`
+     LooseRemainingCourses   []LooseReqCourse `json:"looseRemainingCourses"`
+     OrderOfPrereqs          []Courses        `json:"orderOfPrereqs"`
    }
 
-   type PossiblePrograms []PossibleProgram
-
    type Result struct {
-     Id                         string              `json:"id"`
+     SessionId                  string              `json:"sessionId"`
      StrictRemainingCourses     Courses             `json:"strictRemainingCourses"`
-     LooseRemainingCourses      LooseReqCourses     `json:"looseRemainingCourses"`
-     PossibleProg               PossiblePrograms    `json:"possiblePrograms"`
-     OrderOfPrereqs             Prereqs             `json:"orderOfPrereqs"`
+     LooseRemainingCourses      []LooseReqCourse    `json:"looseRemainingCourses"`
+     PossibleProg               []PossibleProgram   `json:"possiblePrograms"`
+     OrderOfPrereqs             []Courses           `json:"orderOfPrereqs"`
+  }
+  //connect to db
+  db, err := sql.Open("mysql", "mason:pineappleB2@tcp(comp426finalproject.cqu5t9sfyvwq.us-east-2.rds.amazonaws.com:3306)/planner" )
+  if err != nil {
+   log.Fatal(err)
   }
 
-  res := Result{
-    Id : id[0] ,
-    StrictRemainingCourses: Courses{Course{1, 3, 550, 1}, Course{2, 3, 455, 1}},
-    LooseRemainingCourses: LooseReqCourses{{Course{3, 3,426, 1},"Greater than or equal to - 426"}, {Course{4, 3, 433, 1}, "Greater than or equal to - 426"}},
-    PossibleProg: PossiblePrograms{PossibleProgram{"Mathematics BS", 14.333, Courses{Course{4,3, 547, 2}, Course{5,3,521, 2}}, LooseReqCourses{LooseReqCourse{Course{5,3, 528, 2}, "Greater than or equal to - 500"}},
-    Prereqs{Courses{Course{6,3, 231, 2},Course{7,3,232,2}}, Courses{Course{7,3,232, 2}, Course{8,3,233,2}}}},
-    OrderOfPrereqs: Prereqs{Courses{Course{6,3, 231, 2},Course{7,3,232,2}}, Courses{Course{7,3,232, 2}, Course{8,3,233,2}}},
-  }}
+  //get looseRemainingCourses remaining
+  str:= "SELECT PR.req , PR.numCourses, COUNT(DISTINCT C.id) FROM Program P, ProgramRequirements PR, Users U, UserSessions US, Courses C, CoursesTaken CT, CoursesInProgram CP" +
+  " WHERE US.sessionId = ? and U.id = US.uid and PR.pid = P.id and (U.programOne = P.id or U.programTwo = P.id) and PR.req != 'required' and CT.uid = U.id and C.id = CT.cid and CP.cid = C.id and  GROUP BY PR.req , PR.numCourses"
+  rows1, err := db.Query(str, sessionId[0])
+  if err != nil {
+    log.Fatal(err)
+  }
+  defer rows1.Close()
+
+  //go through sql result and add them to list
+  reqMap := make(map[string]int)
+   for rows1.Next() {
+     req := ""
+     numReq := 0
+     numTaken := 0
+     err := rows1.Scan(&req, &numReq, &numTaken)
+     if err != nil {
+       log.Fatal(err)
+     }
+     reqMap[req] = numReq - numTaken
+   }
+
+   if err = rows1.Err(); err != nil {
+     log.Fatal(err)
+   }
+   looseCourses := make([]LooseReqCourse, 0)
+   looseNum := 0
+   for key, value := range reqMap {
+     looseNum = looseNum + value
+     if value > 0 {
+       //should return all courses that fit requirement 'key' that user hasnt already taken
+       str = "SELECT C.id, C.creditHours, C.cNumber, P.dept FROM Courses C, Program P, ProgramRequirements PR, CoursesInProgram CP " +
+             "WHERE C.pid = P.id and C.id = CP.cid and PR.id = CP.prid and PR.pid = P.id and PR.req = ? and C.id NOT IN " +
+             "(SELECT C.id from Courses C, CoursesTaken CT, Users U, UserSessions US WHERE C.id = CT.cid and CT.uid = U.id and U.id = US.uid and US.sessionId = ?)"
+       rows, err := db.Query(str, key, sessionId[0])
+       if err != nil {
+          log.Fatal(err)
+       }
+       defer rows.Close()
+       for rows.Next() {
+         looseCrs := new(LooseReqCourse)
+         crs := new(Course)
+         err := rows.Scan(&crs.Id, &crs.Hours, &crs.Number, &crs.Program)
+         if err != nil {
+           log.Fatal(err)
+         }
+        looseCrs.ReqCourse = *crs
+        looseCrs.Requirement = key
+        looseCrs.Number = value
+        looseCourses = append(looseCourses, *looseCrs)
+       }
+     }
+   }
+
+  //get strictRemaining Courses remaining
+  str = " SELECT C.id, C.creditHours, C.cNumber, P.dept FROM Courses C, Program P, ProgramRequirements PR, Users U, UserSessions US , CoursesInProgram CP WHERE C.pid = P.id and PR.pid = P.id and C.id = CP.cid and CP.prid = PR.id and US.sessionId = ? and " +
+  "US.uid = U.id and (U.programOne = P.id or U.programTwo = P.id) and PR.req = 'required' and C.id NOT IN (Select C.id from Courses C, Users U, UserSessions US, " +
+  "CoursesTaken CT WHERE US.sessionId = ? and US.uid = U.id and CT.uid = U.id and CT.cid = C.id)"
+  rows2, err := db.Query(str, sessionId[0], sessionId[0])
+  if err != nil {
+    log.Fatal(err)
+  }
+  defer rows2.Close()
+
+  //go through sql result and add them to list
+  strictCourses := make([]Course, 0)
+   for rows2.Next() {
+     crs := new(Course)
+     err := rows2.Scan(&crs.Id, &crs.Hours, &crs.Number, &crs.Program)
+     if err != nil {
+       log.Fatal(err)
+     }
+     strictCourses = append(strictCourses, *crs)
+   }
+   if err = rows2.Err(); err != nil {
+     log.Fatal(err)
+   }
+   var genEds int
+   var semLeft int
+   err = db.QueryRow("SELECT U.genEdsLeft, U.semLeft FROM Users U, UserSessions US WHERE U.uid = US.id and US.sessionId = ?", sessionId[0]).Scan(&genEds, &semLeft)
+  //used to calculate the number of hours of looseRemaining Courses that the person has left
+   count := looseNum + len(strictCourses) + genEds
+   classesRemaining := semLeft - count
+   rows3, err := db.Query("SELECT P.dept, P.type FROM Program P WHERE P.numClasses <= ?", classesRemaining)
+   if err != nil {
+     log.Fatal(err)
+   }
+   defer rows3.Close()
+
+   possPrograms := make([]PossibleProgram, 0)
+
+    for rows3.Next() {
+      possProgram := new(PossibleProgram)
+      err := rows3.Scan(&possProgram.Dept, &possProgram.Type)
+      if err != nil {
+        log.Fatal(err)
+      }
+      //looseRemainingCourses for PossProgram
+      str = "SELECT PR.req , PR.numCourses, COUNT(DISTINCT C.id) FROM Program P, ProgramRequirements PR, Users U, UserSessions US, Courses C, CoursesTaken CT, CoursesInProgram CP" +
+      " WHERE US.sessionId = ? and U.id = US.uid and PR.pid = P.id and P.dept = ? and P.type = ? and PR.req != 'required' and CT.uid = U.id and C.id = CT.cid and CP.cid = C.id and GROUP BY PR.req , PR.numCourses"
+      rows4, err := db.Query(str, possProgram.Dept, possProgram.Type, sessionId[0])
+      if err != nil {
+        log.Fatal(err)
+      }
+      defer rows4.Close()
+      reqMap2 := make(map[string]int)
+       for rows4.Next() {
+         req := ""
+         numReq := 0
+         numTaken := 0
+         err := rows4.Scan(&req, &numReq, &numTaken)
+         if err != nil {
+           log.Fatal(err)
+         }
+         reqMap2[req] = numReq - numTaken
+       }
+       if err = rows4.Err(); err != nil {
+         log.Fatal(err)
+       }
+       possLooseCourses := make([]LooseReqCourse, 0)
+       possLooseNum := 0
+       for key, value := range reqMap2 {
+         possLooseNum = possLooseNum + value
+         if value > 0 {
+           //should return all courses that fit requirement 'key' that user hasnt already taken
+           str = "SELECT C.id, C.creditHours, C.cNumber, P.dept FROM Courses C, Program P, ProgramRequirements PR, CoursesInProgram CP " +
+                 "WHERE C.pid = P.id and C.id = CP.cid and PR.id = CP.prid and PR.pid = P.id and PR.req = ? and C.id NOT IN " +
+                 "(SELECT C.id from Courses C, CoursesTaken CT, Users U, UserSessions US WHERE C.id = CT.cid and CT.uid = U.id and U.id = US.uid and US.sessionId = ?)"
+           rows, err := db.Query(str, key, sessionId[0])
+           if err != nil {
+              log.Fatal(err)
+           }
+           defer rows.Close()
+           for rows.Next() {
+             looseCrs := new(LooseReqCourse)
+             crs := new(Course)
+             err := rows.Scan(&crs.Id, &crs.Hours, &crs.Number, &crs.Program)
+             if err != nil {
+               log.Fatal(err)
+             }
+            looseCrs.ReqCourse = *crs
+            looseCrs.Requirement = key
+            looseCrs.Number = value
+            possLooseCourses = append(possLooseCourses, *looseCrs)
+           }
+         }
+       }
+       possProgram.LooseRemainingCourses = possLooseCourses
+
+       //get strictRemaining Courses remaining
+       str = " SELECT C.id, C.creditHours, C.cNumber, P.dept FROM Courses C, Program P, ProgramRequirements PR, Users U, UserSessions US , CoursesInProgram CP WHERE C.pid = P.id and PR.pid = P.id and C.id = CP.cid and CP.prid = PR.id and US.sessionId = ? and " +
+       "US.uid = U.id and P.dept = ? and P.type = ? and PR.req = 'required' and C.id NOT IN (Select C.id from Courses C, Users U, UserSessions US, " +
+       "CoursesTaken CT WHERE US.sessionId = ? and US.uid = U.id and CT.uid = U.id and CT.cid = C.id)"
+       rows5, err := db.Query(str,sessionId[0],possProgram.Dept, possProgram.Type, sessionId[0])
+       if err != nil {
+         log.Fatal(err)
+       }
+       defer rows5.Close()
+
+       //go through sql result and add them to list
+       possStrictCourses := make([]Course, 0)
+        for rows5.Next() {
+          crs := new(Course)
+          err := rows5.Scan(&crs.Id, &crs.Hours, &crs.Number, &crs.Program)
+          if err != nil {
+            log.Fatal(err)
+          }
+          possStrictCourses = append(strictCourses, *crs)
+        }
+        if err = rows5.Err(); err != nil {
+          log.Fatal(err)
+        }
+        possProgram.StrictRemainingCourses = possStrictCourses
+
+        possNumCourses := possLooseNum + len(possProgram.StrictRemainingCourses)
+        possProgram.AvgHoursPerSem = float32(possNumCourses + classesRemaining) / float32(semLeft)
+
+        str = " SELECT PR.prid , C.creditHours, C.cNumber, P.dept from Prereqs PR, Courses C, Program P WHERE PR.cid = ? and C.id = PR.prid and P.id = C.pid"
+        prereqs := make([]Courses, 0)
+        for _ , c := range possProgram.LooseRemainingCourses {
+          rows, err := db.Query(str,c.ReqCourse.Id)
+          switch {
+          	case err == sql.ErrNoRows:
+          		//do nothing
+          	case err != nil:
+          		log.Fatal(err)
+          	default:
+              for rows.Next() {
+                prereq := make([]Course, 0)
+                crs := new(Course)
+                err := rows.Scan(&crs.Id, &crs.Hours, &crs.Number, &crs.Program)
+                if err != nil {
+                  log.Fatal(err)
+                }
+                prereq = append(prereq, c.ReqCourse)
+                prereq = append(prereq, *crs)
+                prereqs = append(prereqs, prereq)
+              }
+          	}
+          defer rows.Close()
+
+        }
+        for _ , c := range possProgram.StrictRemainingCourses {
+          rows, err := db.Query(str,c.Id)
+          switch {
+          	case err == sql.ErrNoRows:
+          		//do nothing
+          	case err != nil:
+          		log.Fatal(err)
+          	default:
+              for rows.Next() {
+                prereq := make([]Course, 0)
+                crs := new(Course)
+                err := rows.Scan(&crs.Id, &crs.Hours, &crs.Number, &crs.Program)
+                if err != nil {
+                  log.Fatal(err)
+                }
+                prereq = append(prereq, c)
+                prereq = append(prereq, *crs)
+                prereqs = append(prereqs, prereq)
+              }
+          	}
+          defer rows.Close()
+
+        }
+        possProgram.OrderOfPrereqs = prereqs
+      if possProgram.AvgHoursPerSem < 18 {
+        possPrograms = append(possPrograms, *possProgram)
+      }
+    }
+    if err = rows3.Err(); err != nil {
+      log.Fatal(err)
+    }
+    str = " SELECT PR.prid , C.creditHours, C.cNumber, P.dept from Prereqs PR, Courses C, Program P WHERE PR.cid = ? and C.id = PR.prid and P.id = C.pid"
+    prereqs := make([]Courses, 0)
+    for _ , c := range looseCourses {
+      rows, err := db.Query(str,c.ReqCourse.Id)
+      switch {
+      	case err == sql.ErrNoRows:
+      		//do nothing
+      	case err != nil:
+      		log.Fatal(err)
+      	default:
+          for rows.Next() {
+            prereq := make([]Course, 0)
+            crs := new(Course)
+            err := rows.Scan(&crs.Id, &crs.Hours, &crs.Number, &crs.Program)
+            if err != nil {
+              log.Fatal(err)
+            }
+            prereq = append(prereq, c.ReqCourse)
+            prereq = append(prereq, *crs)
+            prereqs = append(prereqs, prereq)
+          }
+      	}
+      defer rows.Close()
+
+    }
+    for _ , c := range strictCourses {
+      rows, err := db.Query(str,c.Id)
+      switch {
+      	case err == sql.ErrNoRows:
+      		//do nothing
+      	case err != nil:
+      		log.Fatal(err)
+      	default:
+          for rows.Next() {
+            prereq := make([]Course, 0)
+            crs := new(Course)
+            err := rows.Scan(&crs.Id, &crs.Hours, &crs.Number, &crs.Program)
+            if err != nil {
+              log.Fatal(err)
+            }
+            prereq = append(prereq, c)
+            prereq = append(prereq, *crs)
+            prereqs = append(prereqs, prereq)
+          }
+      	}
+      defer rows.Close()
+
+    }
+
+    res := Result{
+      SessionId : sessionId[0] ,
+      StrictRemainingCourses: strictCourses,
+      LooseRemainingCourses: looseCourses,
+      PossibleProg: possPrograms,
+      OrderOfPrereqs: prereqs,
+    }
+
+
+  // res := Result{
+  //   SessionId : sessionId[0] ,
+  //   StrictRemainingCourses: Courses{Course{1, 3, 550, "COMP"}, Course{2, 3, 455, "COMP"}},
+  //   LooseRemainingCourses: LooseReqCourses{{Course{3, 3,426, "COMP"},"Greater than or equal to - 426",5}, {Course{4, 3, 433, "COMP"}, "Greater than or equal to - 426", 5}},
+  //   PossibleProg: PossiblePrograms{PossibleProgram{"Math","BS", 14.333, Courses{Course{4,3, 547, "MATH"}, Course{5,3,521, "MATH"}}, LooseReqCourses{LooseReqCourse{Course{5,3, 528, "MATH"}, "Greater than or equal to - 500", 3}},
+  //   Prereqs{Courses{Course{6,3, 231, "MATH"},Course{7,3,232,"MATH"}}, Courses{Course{7,3,232, "MATH"}, Course{8,3,233,"MATH"}}}}},
+  //   OrderOfPrereqs : Prereqs{Courses{Course{6,3, 231, "MATH"},Course{7,3,232,"MATH"}}, Courses{Course{7,3,232, "MATH"}, Course{8,3,233,"MATH"}}},
+  // }
 
   if err := json.NewEncoder(w).Encode(res); err != nil {
         panic(err)

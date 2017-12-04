@@ -228,8 +228,13 @@ func GetCoursesTaken(w http.ResponseWriter, r *http.Request){
 //needs to be tested but I think this is working
 func PostUserInformation(w http.ResponseWriter, r *http.Request){
   /*
-  Sample Post Message Body Request
-  {"sessionId":jwGzoQQUmGmONbpqnDBPJeOrncVHbv, "deptTaken":[{"name":"COMP", "coursesTaken": [{"dept":"COMP","number":"110"},{"dept":"COMP","number":"401"}]}, {"name":"MATH", "coursesTaken": [{"dept":"MATH","number":"233"}]}],"currDept":[{"COMP","BS"},{"MATH","Minor"}], "semLeft": 4, "genEdsLeft": 3}
+  {"sessionId":"jwGzoQQUmGmONbpqnDBPJeOrncVHbv",
+ "deptTaken":[ {"name":"COMP", "coursesTaken": [{"dept":"COMP","number":110}, { "dept":"COMP","number":401}] } ,
+			   {"name":"MATH", "coursesTaken": [{"dept":"MATH","number":233} ] } ],
+ "currDept":[{"name":"COMP","type":"BS"},{"name":"MATH","type":"Minor"}],
+ "semLeft": 4,
+ "genEdsLeft": 3
+ }
   */
   type AbvCourse struct {
     Dept    string    `json:"dept"`

@@ -1,6 +1,10 @@
 # MajorPlanner
 The backend program is more or less together at this point, the database just has to be populated with data for the API to actually return non empty results. I haven't updated the aws server yet to reflect these changes so the old examples are still available there however several of the methods have changed (mainly due to implementing logging in). Below I included the schema for the database and information about all the different API calls and what the expected input/output is.
 
+AWS URL: http://ec2-18-217-72-185.us-east-2.compute.amazonaws.com:8080
+
+Ex/ http://ec2-18-217-72-185.us-east-2.compute.amazonaws.com:8080/Courses/?dept=COMP
+
 ## Database Schema
 
 There is an Excel File with the Schema laid out but for simplicity I copied it here as well:

@@ -88,12 +88,13 @@ Where SESSIONID is replaced by the sessionId you recieved at login. This returns
 
 ### Application Result
 Use `[hostname]:8080/PossiblePrograms/?sessionId=SESSIONID`
+THIS WAS CHANGED A BIT FROM BEFORE WITH PREREQS
 Where SESSIONID is replaced by the sessionId you recieved at login. This returns a big JSON with the following information
 - SessionId
 - A list of "StrictRemainingCourses" that all must be taken
 - A list of "LooseRemainingCourses" that fufill certain program requirements but dont all explicitly have ot be taken
 - A list of Possible Programs that the user could take in their remaining time
-- A list of Course pairs that represent prereqs (the second is a prereq on the first)
+- A list of Prereq Objects that have a list of courses and a description with them. With the list of courses the first course is the one that requires some or all of the remaining courses after the first course. Whether or not the prereqs are strictly requried or loosely required can be figured out if the type = 'required' 
 
 The following code represents the object structure in go that is converted to the result to help you decipher the format.
 
@@ -128,6 +129,10 @@ The following code represents the object structure in go that is converted to th
      PossibleProg               []PossibleProgram   `json:"possiblePrograms"`
      OrderOfPrereqs             []Courses           `json:"orderOfPrereqs"`
   }
+  type PreReq struct {
+  Crs   []Course    `json:"Courses"`
+  Des   string      `json:"Type"`
+  }	
 ```
 
 An example result of this query is :

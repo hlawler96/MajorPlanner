@@ -38,7 +38,7 @@ func getCourses(w http.ResponseWriter, r *http.Request) {
 
   }else{
     sql = "SELECT C.id, C.creditHours, C.cNumber, C.dept FROM Courses C, Program P, ProgramRequirements PR, CoursesInProgram CP where " +
-    "P.id = PR.pid and CP.prid = PR.id and C.id = CP.cid and P.dept = " + dept[0] + " and P.type = " + Ptype[0]
+    "P.id = PR.pid and CP.prid = PR.id and C.id = CP.cid and P.dept = '" + dept[0] + "' and P.type = '" + Ptype[0] + "'"
   }
 
   rows, err := db.Query(sql)

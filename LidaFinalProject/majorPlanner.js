@@ -2,6 +2,7 @@ $(document).ready(function () {
   console.log("The js is hooked up");
 });
 
+
 //get values for username and password from website
 //store them in variables
 //print them to console
@@ -12,6 +13,28 @@ function loginSubmit() {
   alert(uname);
   var pass = document.getElementById("pass").value;
   alert(pass);
+  
+  API_URL = "http://ec2-18-217-72-185.us-east-2.compute.amazonaws.com:8080/Login/?username=" + uname + "&password=" + pass;
+  sessionId = "";
+  alert(API_URL);
+  var xhr = createCORSRequest('GET', API_URL);
+  xhr.responseType = 'text';
+ if (!xhr) {
+   alert('CORS not supported');
+   return;
+ }
+ // Response handlers.
+  xhr.onload = function() {
+    var jsonResponse = JSON.parse(xhr.responseText);
+    sessionId = jsonResponse.sessionId;
+  };
+
+  xhr.onerror = function() {
+      alert('FAILURE');
+  };
+
+  xhr.send();
+
   //call API, check if they match
 }
 
@@ -71,6 +94,30 @@ function degreeFinder(){
   window.location.replace("file:///C:/Users/farmerma/Documents/GitHub/MajorPlanner/LidaFinalProject/results.html/");
   alert(sems_left);
 
+}
+
+function createCORSRequest(method, url) {
+  var xhr = new XMLHttpRequest();
+  if ("withCredentials" in xhr) {
+
+    // Check if the XMLHttpRequest object has a "withCredentials" property.
+    // "withCredentials" only exists on XMLHTTPRequest2 objects.
+    xhr.open(method, url, true);
+
+  } else if (typeof XDomainRequest != "undefined") {
+
+    // Otherwise, check if XDomainRequest.
+    // XDomainRequest only exists in IE, and is IE's way of making CORS requests.
+    xhr = new XDomainRequest();
+    xhr.open(method, url);
+
+  } else {
+
+    // Otherwise, CORS is not supported by the browser.
+    xhr = null;
+
+  }
+  return xhr;
 }
 
 

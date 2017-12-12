@@ -21,7 +21,7 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="nav navbar-nav login-navbar">
-        <li class="login-navbar-item"><button  id="loginButton" type="button" onclick="#'"class="btn btn-outline-primary waves-effect">Log In</button></li>
+        <li class="login-navbar-item"><button  id="loginButton" type="button" onclick="self.location='login.html'" class="btn btn-outline-primary waves-effect">Log In</button></li>
         <li class="login-navbar-item"><button id="registerButton" type="button" onclick="self.location='register.html'" class="btn btn-outline-primary waves-effect">Register</button></li>
       </ul>
     </div>
@@ -52,11 +52,13 @@
 
           </div>
           <select id = "majors">
-            <option value="Select Major">Select Degree</option>
+            <option value="Select Degree">Select Degree</option>
             <option value="Computer Science BS">Computer Science BS</option>
             <option value="Computer Science BA">Computer Science BA</option>
             <option value="Economics">Economics</option>
             <option value="Mathematics">Mathematics</option>
+            <option value="Computer Science (Minor)">Computer Science (Minor)</option>
+
           </select>
           <input onclick="selectAdditionalDegree()" type="submit" name="submit" value="Update" class ="btn-login">
 
@@ -72,7 +74,7 @@
   <div id = "prereqs">
   </div>
 </div>
-        <input type="button" onclick="self.location='register.html'" name="button" value="Change Information" class="btn-register">
+        <input type="button" onclick="self.location='planner.html'" name="button" value="Return to Planner" class="btn-register">
       </div>
       </form>
     </div>

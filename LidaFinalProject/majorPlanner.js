@@ -93,6 +93,7 @@ function deptSubmit() {
 function degreeFinder(){
   alert("in degreeFinder!");
   var sems_left = document.getElementById("sems-left").value;
+  window.location.replace("file:///C:/Users/farmerma/Documents/GitHub/MajorPlanner/LidaFinalProject/results.html/");
   alert(sems_left);
 
 }

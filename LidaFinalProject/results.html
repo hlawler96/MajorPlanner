@@ -51,13 +51,15 @@
           <div id = "majorsAvailable" >
 
           </div>
-          <select>
+          <select id = "majors">
             <option value="Select Major">Select Degree</option>
             <option value="Computer Science BS">Computer Science BS</option>
             <option value="Computer Science BA">Computer Science BA</option>
             <option value="Economics">Economics</option>
             <option value="Mathematics">Mathematics</option>
           </select>
+          <input onclick="selectAdditionalDegree()" type="submit" name="submit" value="Update" class ="btn-login">
+
 <br>
 <div id= "avgHours">
   <p> Average hours per semester to graduate:</p>
@@ -70,7 +72,6 @@
   <div id = "prereqs">
   </div>
 </div>
-        <input onclick="loginSubmit()" type="submit" name="submit" value="Update" class ="btn-login">
         <input type="button" onclick="self.location='register.html'" name="button" value="Change Information" class="btn-register">
       </div>
       </form>

@@ -24,6 +24,12 @@ function registerSubmit() {
   //call API, save these in the DB
 }
 
+function selectAdditionalDegree(){
+  additionalDegree = document.getElementById("majors").value;
+  alert(additionalDegree);
+
+}
+
 
 //get value from major check box
 //store in variable

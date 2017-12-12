@@ -1,8 +1,6 @@
 $(document).ready(function () {
   console.log("The js is hooked up");
-  if(!localStorage.sessionId){
-
-  }
+  alert(localStorage.sessionId)
 });
 
 
@@ -11,11 +9,11 @@ $(document).ready(function () {
 //print them to console
 //then add api calls to get them and check them
 function loginSubmit() {
-  alert("in loginSubmit!");
+
   uname = document.getElementById("uname").value;
-  alert(uname);
+
   var pass = document.getElementById("pass").value;
-  alert(pass);
+
 
   API_URL = "http://ec2-18-217-72-185.us-east-2.compute.amazonaws.com:8080/Login/?username=" + uname + "&password=" + pass;
   sessionId = "";
@@ -28,7 +26,7 @@ function loginSubmit() {
  // Response handlers.
   xhr.onload = function() {
     var jsonResponse = JSON.parse(xhr.responseText);
-    localStorage.sessionId = jsonResponse.sessionId;
+    sessionStorage.setItem("variableName","test");
   };
 
   xhr.onerror = function() {
@@ -72,13 +70,47 @@ function deptSubmit() {
   var math_checked = document.getElementById("math").checked;
   if(ba_checked){
     document.getElementById("second-degree-title").innerHTML = "COMP - B.A. - Select the classes you have taken.";
+    var dept = "COMP";
+    var type = "BA";
   }else if(bs_checked){
     document.getElementById("second-degree-title").innerHTML = "COMP - B.S. - Select the classes you have taken.";
+    var dept = "COMP";
+    var type = "BS";
   }else if(econ_checked){
     document.getElementById("second-degree-title").innerHTML = "ECON - B.A. - Select the classes you have taken.";
+    var dept = "ECON";
+    var type = "BA";
   }else if(math_checked){
     document.getElementById("second-degree-title").innerHTML = "MATH - B.A. - Select the classes you have taken.";
+    var dept = "MATH";
+    var type = "BA";
   }
+
+
+  API_URL = "http://ec2-18-217-72-185.us-east-2.compute.amazonaws.com:8080/Courses/?dept=" + dept + "&type=" + type;
+  sessionId = "";
+  alert(API_URL);
+  var xhr = createCORSRequest('GET', API_URL);
+  xhr.responseType = 'text';
+ if (!xhr) {
+   alert('CORS not supported');
+   return;
+ }
+ // Response handlers.
+  xhr.onload = function() {
+    var jsonResponse = JSON.parse(xhr.responseText);
+    courses = jsonResponse.Courses;
+    alert(courses);
+  };
+
+  xhr.onerror = function() {
+      alert('FAILURE');
+  };
+
+  xhr.send();
+
+
+
 
   var sems_input = '<input id="sems-left" type=number max=7 minimum=1 placeholder="Enter Number">';
   $("#sems-left-input-div").empty();

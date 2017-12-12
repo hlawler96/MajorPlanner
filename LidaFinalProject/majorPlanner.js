@@ -106,7 +106,7 @@ function deptSubmit() {
       var prog = jsonResponse[i].program;
       var num = jsonResponse[i].number;
 
-      var checkbox = '<input onclick="" class="menu" type="radio" name="dept" value="chk1">';
+      var checkbox = '<input onclick="" class="menu" type="checkbox" name="dept" value="chk1">';
       // $("#select-classes-div").empty();
       $('#select-classes-div').append(checkbox + " " + prog + " " + num);
 

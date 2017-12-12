@@ -87,7 +87,7 @@ function deptSubmit() {
   }
 
 
-  API_URL = "http://ec2-18-217-72-185.us-east-2.compute.amazonaws.com:8080/Courses/?dept=" + dept + "&type=" + type;
+  API_URL = "http://ec2-18-217-72-185.us-east-2.compute.amazonaws.com:8080/Courses?dept=" + dept + "&type=" + type;
   sessionId = "";
   alert(API_URL);
   var xhr = createCORSRequest('GET', API_URL);
@@ -99,8 +99,23 @@ function deptSubmit() {
  // Response handlers.
   xhr.onload = function() {
     var jsonResponse = JSON.parse(xhr.responseText);
-    courses = jsonResponse.Courses;
-    alert(courses);
+    var length = jsonResponse.length;
+      alert("length= " +length);
+    var i = 0;
+    for(i; i < length; i++){
+      var prog = jsonResponse[i].program;
+      var num = jsonResponse[i].number;
+
+      var checkbox = '<input onclick="" class="menu" type="radio" name="dept" value="chk1">';
+      // $("#select-classes-div").empty();
+      $('#select-classes-div').append(checkbox + " " + prog + " " + num);
+
+     }
+
+    alert(jsonResponse);
+
+    // courses = jsonResponse.Courses;
+    // alert(courses);
   };
 
   xhr.onerror = function() {

@@ -13,7 +13,9 @@ import _ "github.com/go-sql-driver/mysql"
 //fully functioning
 func getCourses(w http.ResponseWriter, r *http.Request) {
   //Tell Response to expect a json
+  w.Header().Set("Access-Control-Allow-Origin", "*")
   w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+
   w.WriteHeader(http.StatusOK)
 
   //open database
@@ -56,13 +58,14 @@ func getCourses(w http.ResponseWriter, r *http.Request) {
 }
 //fully functioning lol
 func test(w http.ResponseWriter, r *http.Request) {
+  w.Header().Set("Access-Control-Allow-Origin", "*")
 fmt.Fprintln(w, "Hello world :)")
 }
 //fully functioning
 func Login(w http.ResponseWriter, r *http.Request){
   // example call
   // http://localhost:8080/Login/?username=user&password=pass
-
+ w.Header().Set("Access-Control-Allow-Origin", "*")
 
 
   user, ok := r.URL.Query()["username"]
@@ -115,7 +118,7 @@ func Login(w http.ResponseWriter, r *http.Request){
 func SignUp(w http.ResponseWriter, r *http.Request){
   // example call
   //http://localhost:8080/SignUp/?name=hayden&username=hayden&password=password
-
+w.Header().Set("Access-Control-Allow-Origin", "*")
 
   user, ok := r.URL.Query()["username"]
   if !ok || len(user) < 1 {
@@ -185,7 +188,7 @@ func SignUp(w http.ResponseWriter, r *http.Request){
 //fully functioning
 func GetCoursesTaken(w http.ResponseWriter, r *http.Request){
   //example call http://localhost:8080/CoursesTaken/?id=1
-
+  w.Header().Set("Access-Control-Allow-Origin", "*")
 
   sessionId, ok := r.URL.Query()["sessionId"]
   if !ok || len(sessionId) < 1 {
@@ -227,6 +230,7 @@ func GetCoursesTaken(w http.ResponseWriter, r *http.Request){
 }
 //fully functioning
 func PostUserInformation(w http.ResponseWriter, r *http.Request){
+  w.Header().Set("Access-Control-Allow-Origin", "*")
   /*
   {"sessionId":"jwGzoQQUmGmONbpqnDBPJeOrncVHbv",
  "deptTaken":[ {"name":"COMP", "coursesTaken": [{"dept":"COMP","number":110}, { "dept":"COMP","number":401}] } ,
@@ -333,6 +337,7 @@ func PostUserInformation(w http.ResponseWriter, r *http.Request){
 }
 
 func GetResult(w http.ResponseWriter, r *http.Request){
+  w.Header().Set("Access-Control-Allow-Origin", "*")
   sessionId, ok := r.URL.Query()["sessionId"]
   if !ok || len(sessionId) < 1 {
        fmt.Fprintln(w, "Url Param 'sessionId' is missing")
@@ -578,6 +583,7 @@ func GetResult(w http.ResponseWriter, r *http.Request){
 
 
 func GetUserInfo(w http.ResponseWriter, r *http.Request){
+  w.Header().Set("Access-Control-Allow-Origin", "*")
   sessionId, ok := r.URL.Query()["sessionId"]
   if !ok || len(sessionId) < 1 {
        fmt.Fprintln(w, "Url Param 'sessionId' is missing")

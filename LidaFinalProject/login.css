@@ -1,6 +1,6 @@
 .loginForm{
   background-color:	#C4B7C1;
-  width: 500px;
+  width: 800px;
   height:600px;
   margin:auto;
   margin-top: 14em;
@@ -11,13 +11,18 @@
 }
 #log2{
   background-color:	#569ba9;
-  width: 300px;
+  width: 600px;
   height:500px;
   margin: auto;
   border-radius: 10px;
 }
 #classesRemaining{
   height: 80px;
+
+}
+#hours{
+  height:25px;
+
 }
 #majorsAvailable{
   height: 45px;

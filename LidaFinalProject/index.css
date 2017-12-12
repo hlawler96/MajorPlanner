@@ -1,0 +1,94 @@
+.random-div {
+  background-color: red;
+}
+
+.login-navbar {
+  float: right;
+}
+
+.login-navbar-item {
+  margin-left: 20px;
+}
+
+.top-ad {
+  height: 700px;
+  position: relative;
+  text-align: center;
+  background-image: url("background.jpeg");
+  background-size: 100%;
+
+}
+
+.title-div {
+  position: absolute;
+  top: 10%;
+  width: 100%;
+  text-align: center;
+}
+
+.title {
+  font: Georgia;
+  font-size: 100px;
+}
+ .sub-title {
+   font: Georgia;
+   font-size: 20px;
+ }
+
+ .flow-chart-row {
+   margin: 0;
+   height: 250px;
+   background-color: rgba(255, 0, 0, 0.05);
+   /*border: solid black;*/
+ }
+ .description-card {
+   margin-bottom: 50px;
+   margin-top: 50px;
+   margin-left: 50px;
+   margin-right: 50px;
+ }
+ .description-title {
+  font-family: Georgia;
+  font-size: 30px;
+ }
+ .description {
+   margin-top: 15px;
+   font-size: 15px;
+ }
+ .about-us {
+   height: 250px;
+   background-color: rgb(200,190,180);
+ }
+ .about-us-text {
+   width: 100%;
+   text-align: center;
+ }
+ .info-below-title {
+   padding-left: 0px !important;
+   padding-right: 0px !important;
+ }
+ .front-page-header {
+   font-family: Georgia;
+   font-size: 30px;
+   /*margin-top:20px;*/
+   margin-left: 30px;
+   width: 100%;
+ }
+ .meet-the-team {
+   height: 450px;
+   background-color: 	rgb(188, 166, 142;
+ }
+ /*.meet-card-container {
+   width: 300px;
+   margin: auto;
+ }
+ .meet-card {
+   margin-left: 10px;
+   margin-right: 25px;
+   width: 100%;
+ }*/
+
+.dropdown2{
+  float: right;
+  height: 200px;
+}

@@ -1,0 +1,26 @@
+.form{
+  background-color:	#C4B7C1;
+  width: 800px;
+  height:600px;
+  margin:auto;
+  margin-top: 16em;
+  border-radius: 10px;
+  padding-top: 20px;
+}
+.major{
+  position: absolute;
+  margin-left: 20px;
+  text-align: left;
+}
+.menu{
+  margin-left: 20px;
+  margin-bottom: 10px;
+}
+.sbmt-btn{
+  margin-left: 20px;
+  border-radius: 10px;
+  background-color: white;
+}
+.sbmt-btn:hover{
+  background-color: #4f9BA2;
+}

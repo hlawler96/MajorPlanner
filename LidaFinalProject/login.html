@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Major Planner</title>
+<link rel="stylesheet" type="text/css" href="index.css">
+<link rel="stylesheet" type="text/css" href="login.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+<!-- <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://dist/bootsnipp.min.css"> -->
+<link href='https://fonts.googleapis.com/css?family=Titillium+Web:400,300,600' rel='stylesheet' type='text/css'>
+<script src = "majorPlanner.js" type="text/javascript"></script>
+</head>
+<body>
+  <div>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+    <a class="navbar-brand" href="index.html">Major Planner</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="nav navbar-nav login-navbar">
+        <li class="login-navbar-item"><button  id="loginButton" type="button" onclick="#'"class="btn btn-outline-primary waves-effect">Log In</button></li>
+        <li class="login-navbar-item"><button id="registerButton" type="button" onclick="self.location='register.html'" class="btn btn-outline-primary waves-effect">Register</button></li>
+      </ul>
+    </div>
+    </nav>
+  <div class="top-ad">
+    <div class="title-div">
+      <div class="title">
+        Major Planner
+      </div>
+      <div class="sub-title">
+        Log In
+      </div>
+    </div>
+    <br> <br>
+    <div class = "loginForm">
+      <img src="ram.jpg">
+      <form id="login-form" class="login">
+        <div class="formInput">
+          <input id="uname" type="text" name="Username" placeholder="Enter Username">
+        </div>
+        <div class="formInput">
+          <input id="pass" type="password" name="Password" placeholder="Enter Password">
+        </div>
+        <input onclick="loginSubmit()" type="submit" name="submit" value="Log in" class ="btn-login">
+        <p> New to Major Planner? Register now! </p>
+        <input type="button" onclick="self.location='register.html'" name="button" value="Register Now" class="btn-register">
+      </form>
+    </div>
+
+
+
+  </div>
+
+
+
+
+
+
+
+
+
+</body>
+</html>

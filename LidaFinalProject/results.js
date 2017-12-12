@@ -16,7 +16,10 @@ if (!xhr) {
 // Response handlers.
 xhr.onload = function() {
   var jsonResponse = JSON.parse(xhr.responseText);
-  courses = jsonResponse.Courses;
+  for(var i=0; i<jsonResponse.length; i++;){
+  dept = jsonResponse.strictRemainingCourses[i].dept;
+  num = jsonResponse.strictRemainingCourses[i].number;
+}
   alert(courses);
 };
 

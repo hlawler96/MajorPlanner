@@ -23,16 +23,25 @@ func getCourses(w http.ResponseWriter, r *http.Request) {
  if err != nil {
    log.Fatal(err)
  }
+ sql := "select C.id, C.creditHours, C.cNumber, C.dept from Courses C"
  //check for dept param
- dept, ok := r.URL.Query()["dept"]
- sqlCond := " where C.dept = '"
+ dept, ok1 := r.URL.Query()["dept"]
+
  //if dept param is given then only return classes in that dept
- if !ok || len(dept) < 1 {
-    sqlCond = ""
-  }else{
-    sqlCond = sqlCond + dept[0] + "'"
+ if !ok1 || len(dept) < 1 {
+
   }
-  rows, err := db.Query("SELECT C.id, C.creditHours, C.cNumber, C.dept FROM Courses C " + sqlCond)
+
+ Ptype, ok := r.URL.Query()["type"]
+
+ if !ok || len(Ptype) < 1 {
+
+  }else{
+    sql = "SELECT C.id, C.creditHours, C.cNumber, C.dept FROM Courses C, Program P, ProgramRequirements PR, CoursesInProgram CP where " +
+    "P.id = PR.pid and CP.prid = PR.id and C.id = CP.cid and P.dept = " + dept[0] + " and P.type = " + Ptype[0]
+  }
+
+  rows, err := db.Query(sql)
   if err != nil {
     log.Fatal(err)
   }

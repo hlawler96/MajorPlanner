@@ -1,5 +1,8 @@
 $(document).ready(function () {
   console.log("The js is hooked up");
+  if(!localStorage.sessionId){
+
+  }
 });
 
 
@@ -16,7 +19,6 @@ function loginSubmit() {
 
   API_URL = "http://ec2-18-217-72-185.us-east-2.compute.amazonaws.com:8080/Login/?username=" + uname + "&password=" + pass;
   sessionId = "";
-  alert(API_URL);
   var xhr = createCORSRequest('GET', API_URL);
   xhr.responseType = 'text';
  if (!xhr) {
@@ -26,7 +28,7 @@ function loginSubmit() {
  // Response handlers.
   xhr.onload = function() {
     var jsonResponse = JSON.parse(xhr.responseText);
-    sessionId = jsonResponse.sessionId;
+    localStorage.sessionId = jsonResponse.sessionId;
   };
 
   xhr.onerror = function() {
@@ -125,6 +127,7 @@ function deptSubmit() {
 function degreeFinder(){
   alert("in degreeFinder!");
   var sems_left = document.getElementById("sems-left").value;
+  window.location.replace("file:///C:/Users/farmerma/Documents/GitHub/MajorPlanner/LidaFinalProject/results.html/");
   alert(sems_left);
 
 }

@@ -34,13 +34,48 @@ function registerSubmit() {
 
 
 function deptSubmit() {
-  alert("in deptSubmit!");
+  // alert("in deptSubmit!");
   var ba_checked = document.getElementById("ba").checked;
-  alert(ba_checked);
+  var bs_checked = document.getElementById("bs").checked;
+  var econ_checked = document.getElementById("econ").checked;
+  var math_checked = document.getElementById("math").checked;
   if(ba_checked){
-    document.getElementById("second-degree-title").innerHTML = "Selected major: COMP - B.A.";
-    $('ba').prop('checked' , ba_checked);
-    // document.getElementById("second-degree-title").attr("checked");
+    document.getElementById("second-degree-title").innerHTML = "COMP - B.A. - Select the classes you have taken.";
+  }else if(bs_checked){
+    document.getElementById("second-degree-title").innerHTML = "COMP - B.S. - Select the classes you have taken.";
+  }else if(econ_checked){
+    document.getElementById("second-degree-title").innerHTML = "ECON - B.A. - Select the classes you have taken.";
+  }else if(math_checked){
+    document.getElementById("second-degree-title").innerHTML = "MATH - B.A. - Select the classes you have taken.";
   }
 
+  var sems_input = '<input id="sems-left" type=number max=7 minimum=1 placeholder="Enter Number">';
+  $("#sems-left-input-div").empty();
+  $('#sems-left-input-div').append('Semesters Left: '+ sems_input);
+
+  var submit_classes = '<input id="submt-classes" onclick="degreeFinder()" type="submit" value="Find Me Another Degree!">';
+  $("#submt-classes-div").empty();
+  $('#submt-classes-div').append(submit_classes);
+
 }
+
+function degreeFinder(){
+  alert("in degreeFinder!");
+  var sems_left = document.getElementById("sems-left").value;
+  alert(sems_left);
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+/////bottom

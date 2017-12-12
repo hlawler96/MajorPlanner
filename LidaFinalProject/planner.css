@@ -24,3 +24,20 @@
 .sbmt-btn:hover{
   background-color: #4f9BA2;
 }
+#sems-left-input-div{
+  float:left;
+  margin-top: 7em;
+  padding-left: 20px;
+}
+#submt-classes-div{
+  margin: auto;
+  margin-top: 9em;
+  float:left;
+}
+#submt-classes{
+  border-radius: 10px;
+  background-color: white;
+}
+#submt-classes:hover{
+  background-color: #16a6A9;
+}

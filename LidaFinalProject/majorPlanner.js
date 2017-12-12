@@ -1,6 +1,6 @@
 $(document).ready(function () {
   console.log("The js is hooked up");
-  alert(localStorage.sessionId)
+  // alert(localStorage.sessionId)
 });
 
 

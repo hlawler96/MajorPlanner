@@ -1,11 +1,28 @@
 .loginForm{
   background-color:	#C4B7C1;
   width: 500px;
-  height:400px;
+  height:600px;
   margin:auto;
   margin-top: 14em;
   border-radius: 10px;
 }
+#spacer{
+  height: 20px;
+}
+#log2{
+  background-color:	#569ba9;
+  width: 300px;
+  height:500px;
+  margin: auto;
+  border-radius: 10px;
+}
+#classesRemaining{
+  height: 80px;
+}
+#majorsAvailable{
+  height: 45px;
+}
+
 .loginForm img{
   width: 100px;
   height:80px;
@@ -37,7 +54,7 @@ p{
 }
 .btn-register{
   height: 45px;
-  width:80px;
+  width:180px;
   margin-top: 10px;
   padding: 10px;
   background-color: grey;

@@ -16,6 +16,9 @@
   margin: auto;
   border-radius: 10px;
 }
+.remainingCourse{
+display: inline;
+  }
 #classesRemaining{
   height: 80px;
 

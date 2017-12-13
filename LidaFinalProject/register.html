@@ -13,7 +13,7 @@
 <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css">
 <link rel="stylesheet" href="https://dist/bootsnipp.min.css"> -->
 <link href='https://fonts.googleapis.com/css?family=Titillium+Web:400,300,600' rel='stylesheet' type='text/css'>
-<script src = "majorPlanner.js" type="text/javascript"></script>
+<script src = "register.js" type="text/javascript"></script>
 </head>
 <body>
   <div>
@@ -43,7 +43,7 @@
       <img src="ram.jpg">
       <form id="register-form" class="login">
         <div class="formInput">
-          <input type="text" name="Name" placeholder="Enter Name">
+          <input id="name" type="text" name="Name" placeholder="Enter Name">
         </div>
         <div class="formInput">
           <input id="uname" type="text" name="Username" placeholder="Enter a Username">
@@ -51,7 +51,7 @@
         <div class="formInput">
           <input id="pass" type="password" name="Password" placeholder="Enter Password">
         </div>
-        <input onclick="registerSubmit()" type="submit" name="submit" value="Register" class ="btn-login">
+        <input onclick="registerSubmit()" name="submit" value="Register" class ="btn-login">
         <p> Already have a Major Planner account? Log in now! </p>
         <input type="button" onclick="self.location='login.html'" name="button" value="Log in" class="btn-register">
       </form>

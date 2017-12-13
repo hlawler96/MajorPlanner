@@ -157,4 +157,5 @@ Here's an example of the message body with the user information to post
 	        "coursesTaken": [{"dept":"MATH","number":233} ] } ],
  "currDept":[{"name":"COMP","type":"BS"},{"name":"MATH","type":"Minor"}],
  "semLeft": 4,
- "genEdsLeft": 3 ```
+ "genEdsLeft": 3
+ ```

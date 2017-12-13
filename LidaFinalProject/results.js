@@ -15,7 +15,7 @@ API_URL = "http://ec2-18-217-72-185.us-east-2.compute.amazonaws.com:8080/Possibl
 var xhr = createCORSRequest('GET', API_URL);
 xhr.responseType = 'text';
 if (!xhr) {
- alert('CORS not supported');
+ //alert('CORS not supported');
  return;
 }
 // Response handlers.
@@ -82,7 +82,7 @@ for(var i = 0; i < jsonResponse.orderOfPrereqs.length; i++){
 
 
 xhr.onerror = function() {
-    alert('FAILURE');
+    //alert('FAILURE');
 };
 
 xhr.send();

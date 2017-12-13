@@ -69,13 +69,22 @@ xhr.onerror = function() {
 xhr.send();
 }
 function selectAdditionalDegree() {
-  var major = $('#majors :selected').val();
-  var dept = major.split(' ')[0];
-  var type = major.split(' ')[1];
+
+  var major = $('#majors :selected').val().split(' ');
+  var dept = major[0];
+  var type = major[major.length-1];
+
+  $('#selectedProgram').empty();
+
+  $('#selectedProgram').append("<table id = 'possCoursesToTake' ><tr class='table'><th>Requirement</th><th>Courses</th></tr></table>");
+
   for(var i = 0; i < response.possiblePrograms.length; i++){
-      if(response.possiblePrograms[i].dept == dept && response.possiblePrograms[i].type == type){
+
+      if(response.possiblePrograms[i].dept.split(' ')[0] == dept && response.possiblePrograms[i].type == type){
+        alert("dept: " + dept + " type: " + type);
+        $('#possCoursesToTake').append("<tr class='table'><th>Required</th><th><ul id='possStrict'></ul></th></tr>")
         for(var j = 0 ; j < response.possiblePrograms[i].strictRemainingCourses.length ; j++){
-           response.possiblePrograms[i].strictRemainingCourses[j]
+          $('#possStrict').append("<li class = 'courses'>" + response.possiblePrograms[i].strictRemainingCourses[j].program + " " + response.possiblePrograms[i].strictRemainingCourses[j].number + " </li> ")
         }
       }
   }

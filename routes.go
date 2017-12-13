@@ -60,4 +60,42 @@ var routes = Routes{
         "/UserInfo/",
         GetUserInfo,
     },
+    Route{
+        "OptionsUserInfo",
+        "OPTIONS",
+        "/UserInfo/",
+        handleOptions,
+    },
+    Route{
+        "OptionsUserInfo",
+        "OPTIONS",
+        "/",
+        handleOptions,
+    },
+    Route{
+        "OptionsUserInfo",
+        "OPTIONS",
+        "/PossiblePrograms/",
+        handleOptions,
+    },
+    Route{
+        "OptionsUserInfo",
+        "OPTIONS",
+        "/Login/",
+        handleOptions,
+    },
+    Route{
+        "OptionsUserInfo",
+        "OPTIONS",
+        "/SignUp/",
+        handleOptions,
+    },
+    Route{
+        "OptionsUserInfo",
+        "OPTIONS",
+        "/CoursesTaken/",
+        handleOptions,
+    },
+
+
 }

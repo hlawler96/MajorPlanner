@@ -8,6 +8,7 @@ import (
     "fmt"
     "time"
     "math/rand"
+    "strconv"
 )
 import _ "github.com/go-sql-driver/mysql"
 //fully functioning
@@ -299,7 +300,7 @@ func PostUserInformation(w http.ResponseWriter, r *http.Request){
   err = db.QueryRow("SELECT U.id FROM Users U, UserSessions US WHERE US.uid = U.id and US.sessionId = ?", user_info.SessionId).Scan(&id)
 
   if err == sql.ErrNoRows {
-    log.Println("empty sql result")
+    log.Println("empty sql result, SessionId=" + user_info.SessionId)
   }else if err != nil {
     log.Fatal(err)
   }
@@ -327,7 +328,7 @@ func PostUserInformation(w http.ResponseWriter, r *http.Request){
       pid1, pid2 := 0, 0
       err = db.QueryRow("SELECT P.id FROM Program P WHERE P.dept = ? and P.type = ?", user_info.CurrDept[0].Name , user_info.CurrDept[0].Type).Scan(&pid1)
       if err == sql.ErrNoRows {
-        log.Println("empty sql result")
+        log.Println("empty sql result Name = " + user_info.CurrDept[0].Name + " Type = " + user_info.CurrDept[0].Type)
       }else if err != nil {
         log.Fatal(err)
       }
@@ -336,7 +337,7 @@ func PostUserInformation(w http.ResponseWriter, r *http.Request){
       }else {
         err = db.QueryRow("SELECT P.id FROM Program P WHERE P.dept = ? and P.type = ?", user_info.CurrDept[1].Name , user_info.CurrDept[1].Type).Scan(&pid2)
         if err == sql.ErrNoRows {
-          log.Println("empty sql result")
+          log.Println("empty sql result Name = " + user_info.CurrDept[1].Name + " Type " + user_info.CurrDept[1].Type)
         }else if err != nil {
           log.Fatal(err)
         }
@@ -349,7 +350,7 @@ func PostUserInformation(w http.ResponseWriter, r *http.Request){
             var cid int
             err = db.QueryRow("SELECT C.id FROM Courses C WHERE C.cNumber = ? and C.dept = ?", course.Number, dept.Name).Scan(&cid)
             if err == sql.ErrNoRows {
-              log.Println("empty sql result")
+              log.Println("empty sql result Number = " + strconv.Itoa(course.Number) + " dept = " + dept.Name)
             }else if err != nil {
               log.Fatal(err)
             }
@@ -621,7 +622,15 @@ func GetResult(w http.ResponseWriter, r *http.Request){
   }
 
 
+func handleOptions(w http.ResponseWriter, r *http.Request){
+    w.Header().Set("Access-Control-Allow-Origin", "*")
+    w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+    w.Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
+    return
+}
+
 func GetUserInfo(w http.ResponseWriter, r *http.Request){
+
   w.Header().Set("Access-Control-Allow-Origin", "*")
   sessionId, ok := r.URL.Query()["sessionId"]
   if !ok || len(sessionId) < 1 {

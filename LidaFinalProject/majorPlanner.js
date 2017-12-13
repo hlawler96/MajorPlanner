@@ -179,7 +179,7 @@ function deptSubmit() {
 }
 var type = "";
 var dept2 = "";
-
+var minorCheckBoxes = new Array();
 
 function minorSubmit(dept){
   // alert("in minorSubmit");
@@ -267,7 +267,7 @@ function minorSubmit(dept){
  }
  // Response handlers.
 
- minorCheckBoxes= [];
+ // minorCheckBoxes= [];
 
   xhr.onload = function() {
     // alert("in function");
@@ -317,15 +317,20 @@ function degreeFinder(){
   var checkCount = 0;
   var type2 = "Minor";
   deptObj1 = {"name":dept1, "type":type1};
-  deptObj2 = {"name":dept2, "type":type2};
-  currDept = [deptObj1, deptObj2];
+  if(dept2 != ""){
+    deptObj2 = {"name":dept2, "type":type2};
+    currDept = [deptObj1, deptObj2];
+  }else{
+    currDept = [deptObj1];
+  }
+
   son = {};
   deptTaken = [];
   son ["sessionId"] = window.localStorage.getItem('sessionId');
   son ["deptTaken"] = deptTaken;
   son ["currDept"] = currDept;
-  son ["semLeft"] = sems_left;
-  son ["genEdsLeft"] = gens_left;
+  son ["semLeft"] = parseInt(sems_left);
+  son ["genEdsLeft"] = parseInt(gens_left);
   for(i; i< checkBoxes.length; i++){
     var box_checked = document.getElementById(checkBoxes[i]).checked;
     if(box_checked){
@@ -344,26 +349,47 @@ function degreeFinder(){
     }
   }
   var allCheckedClasses = checkedArray.concat(minorCheckedArray);
-
-  for(i; i<allCheckedClasses.length; i++){
+  // alert(allCheckedClasses.length);
+  for(i=0; i<allCheckedClasses.length; i++){
+    // alert(i);
     k = deptTaken.length;
     var found = false;
     d = allCheckedClasses[i].split('-')[0];
     n = allCheckedClasses[i].split('-')[1];
-    for(j; j<deptTaken.length; j++){
+    // alert(d + " " + n);
+    for(j=0; j<deptTaken.length; j++){
       if(deptTaken[j].name == d){
       found = true;
       k = j;
       }
     }
+    // alert("Found:" + found);
     if(found){
-      deptTaken[k].coursesTaken.push({"dept":d,"num":n}) ;
+      deptTaken[k].coursesTaken.push({"dept":d,"number":parseInt(n)}) ;
     }else{
-      dT = {"name":d, "coursesTaken":[{"dept":d,"num":n}]};
+      dT = {"name":d, "coursesTaken":[{"dept":d,"number":parseInt(n)}]};
       deptTaken.push(dT);
     }
   }
   alert(JSON.stringify(son));
+
+  API_URL = "http://localhost:8080/UserInfo/";
+
+  var xhr = createCORSRequest('POST', API_URL);
+  xhr.setRequestHeader("Content-type", "json");
+
+ if (!xhr) {
+   alert('CORS not supported');
+   return;
+ }
+ // Response handlers
+  xhr.onload = function() {
+    alert("SUCCESS");
+  };
+  xhr.onerror = function() {
+      alert('FAILURE');
+  };
+  xhr.send(JSON.stringify(son));
   // window.location.replace("file:///Users/lahixson/Documents/GitHub/MajorPlanner/LidaFinalProject/results.html");
 
 }

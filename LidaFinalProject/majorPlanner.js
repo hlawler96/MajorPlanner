@@ -7,7 +7,7 @@ $(document).ready(function () {
        // alert("NO Session Id");
     }
   } else{
-  alert("storage not supported by browser");
+  //alert("storage not supported by browser");
   }
   var fun = function(e){
       if(e.keyCode==13) loginSubmit();
@@ -24,30 +24,30 @@ function loginSubmit() {
   var xhr = createCORSRequest('GET', API_URL);
   xhr.responseType = 'text';
  if (!xhr) {
-   alert('CORS not supported');
+   //alert('CORS not supported');
    return;
  }
  // Response handlers
   xhr.onload = function() {
     var jsonResponse = JSON.parse(xhr.responseText);
-    alert(jsonResponse.sessionId);
+    //alert(jsonResponse.sessionId);
     window.localStorage.setItem('sessionId',jsonResponse.sessionId);
     if( jsonResponse.sessionId == ""){
-      alert("Not a valid login");
+      //alert("Not a valid login");
     }else {
-      alert(window.localStorage.getItem('sessionId'));
+      //alert(window.localStorage.getItem('sessionId'));
     }
      window.location.href = "results.html";
   };
   xhr.onerror = function() {
-      alert('FAILURE');
+      //alert('FAILURE');
   };
   xhr.send();
 }
 
 function selectAdditionalDegree(){
   additionalDegree = document.getElementById("majors").value;
-  alert(additionalDegree);
+  //alert(additionalDegree);
 
 }
 
@@ -120,7 +120,7 @@ function deptSubmit() {
   var xhr = createCORSRequest('GET', API_URL);
   xhr.responseType = 'text';
  if (!xhr) {
-   alert('CORS not supported');
+   //alert('CORS not supported');
    return;
  }
  // Response handlers.
@@ -157,7 +157,7 @@ function deptSubmit() {
   };
 
   xhr.onerror = function() {
-      alert('FAILURE');
+      //alert('FAILURE');
   };
 
   xhr.send();
@@ -262,7 +262,7 @@ function minorSubmit(dept){
   var xhr = createCORSRequest('GET', API_URL);
   xhr.responseType = 'text';
  if (!xhr) {
-   alert('CORS not supported');
+   //alert('CORS not supported');
    return;
  }
  // Response handlers.
@@ -298,7 +298,7 @@ function minorSubmit(dept){
   };
 
   xhr.onerror = function() {
-      alert('FAILURE');
+      //alert('FAILURE');
   };
 
   xhr.send();
@@ -371,7 +371,7 @@ function degreeFinder(){
       deptTaken.push(dT);
     }
   }
-  alert(JSON.stringify(son));
+  //alert(JSON.stringify(son));
 
   API_URL = "http://localhost:8080/UserInfo/";
 
@@ -379,15 +379,15 @@ function degreeFinder(){
   xhr.setRequestHeader("Content-type", "json");
 
  if (!xhr) {
-   alert('CORS not supported');
+   //alert('CORS not supported');
    return;
  }
  // Response handlers
   xhr.onload = function() {
-    alert("SUCCESS");
+    //alert("SUCCESS");
   };
   xhr.onerror = function() {
-      alert('FAILURE');
+      //alert('FAILURE');
   };
   xhr.send(JSON.stringify(son));
   // window.location.replace("file:///Users/lahixson/Documents/GitHub/MajorPlanner/LidaFinalProject/results.html");

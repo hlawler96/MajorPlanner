@@ -32,8 +32,23 @@ xhr.onload = function() {
     }
   var dept = jsonResponse.strictRemainingCourses[i].program;
   var num = jsonResponse.strictRemainingCourses[i].number;
-  $('#classesRemaining').append("<span class = 'remainingCourse'>" + dept + " " + num + "</span> ");
+  $('#strictClassesRemaining').append("<span class = 'remainingCourse'>" + dept + " " + num + "</span> ");
   displayLength++;
+}
+//loose remaining courses
+req = ""
+j = 0;
+for(var i = 0; i < jsonResponse.looseRemainingCourses.length; i++){
+  var dept = jsonResponse.looseRemainingCourses[i].course.program;
+  var num = jsonResponse.looseRemainingCourses[i].course.number;
+  var temp = jsonResponse.looseRemainingCourses[i].requirement;
+  if(temp != req){
+      $('#looseClassesRemaining').append("<span> " + temp + " <ul id = '" + i + "'> </ul> </span>");
+      req = temp;
+      j = i;
+  }
+  //do CSS for this
+  $('#' + j).append("<li class = 'looseCourses'>" + dept + " " + num + "</li> ");
 }
 
 //possible programs

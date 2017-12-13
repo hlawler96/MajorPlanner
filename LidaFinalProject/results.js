@@ -2,13 +2,13 @@
 $(document).ready(function () {
   console.log("The js is hooked up");
   sessionId=  window.localStorage.getItem('sessionId');
-  alert(sessionId);
+  alert("about to try populate");
   populateCoursesTaken();
-  alert("went to populate, or tried");
 });
 
 
 function populateCoursesTaken(){
+alert("first line of populate");
 API_URL = "http://ec2-18-217-72-185.us-east-2.compute.amazonaws.com:8080/PossiblePrograms/?sessionId=" + sessionId;
 alert(API_URL);
 var xhr = createCORSRequest('GET', API_URL);

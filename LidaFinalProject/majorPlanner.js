@@ -43,7 +43,6 @@ function loginSubmit() {
       alert('FAILURE');
   };
   xhr.send();
-
 }
 
 function selectAdditionalDegree(){

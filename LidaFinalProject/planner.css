@@ -29,10 +29,14 @@
   margin-top: 8em;
   padding-left: 20px;
 }
+#gen-eds-left{
+  float: left;
+  margin-top: 8em;
+  padding-left: 20px;
+}
 #submt-classes-div{
   margin: auto;
   margin-top: 12em;
-  float:left;
 }
 #submt-classes{
   border-radius: 10px;

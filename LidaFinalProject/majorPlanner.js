@@ -52,6 +52,8 @@ function selectAdditionalDegree(){
 }
 
 var dept = "";
+var dept1 = "";
+var type1 = "";
 
 function deptSubmit() {
   // alert("in deptSubmit!");
@@ -63,18 +65,25 @@ function deptSubmit() {
   if(ba_checked){
     document.getElementById("second-degree-title").innerHTML = "COMP - B.A. - Select the classes you have taken.";
      dept = "COMP";
+     dept1 = "COMP";
+     type1 = "BA";
     var type = "BA";
   }else if(bs_checked){
     document.getElementById("second-degree-title").innerHTML = "COMP - B.S. - Select the classes you have taken.";
      dept = "COMP";
+     dept1 = "COMP";
+     type1 = "BS";
     var type = "BS";
   }else if(econ_checked){
     document.getElementById("second-degree-title").innerHTML = "ECON - B.A. - Select the classes you have taken.";
      dept = "ECON";
+     dept1 = "ECON";
+     type1 = "BA";
     var type = "BA";
   }else if(math_checked){
     document.getElementById("second-degree-title").innerHTML = "MATH - B.A. - Select the classes you have taken.";
      dept = "MATH";
+     type1 = "BA";
     var type = "BA";
   }
   //inside deptSubmit
@@ -158,6 +167,10 @@ function deptSubmit() {
   var sems_input = '<input id="sems-left" type=number max=7 minimum=1 placeholder="Enter Number">';
   $("#sems-left-input-div").empty();
   $('#sems-left-input-div').append('Semesters Left: '+ sems_input);
+
+  var gens_input = '<input id="gens-left" type=number max=20 minimum=1 placeholder="Enter Number">';
+  $("#gen-eds-left").empty();
+  $('#gen-eds-left').append('Gen Eds Left: '+ gens_input);
 
   var submit_classes = '<input id="submt-classes" onclick="degreeFinder()" type="submit" value="Find Me Another Degree!">';
   $("#submt-classes-div").empty();
@@ -299,6 +312,9 @@ function minorSubmit(dept){
 function degreeFinder(){
   // alert("in degreeFinder!");
   var sems_left = document.getElementById("sems-left").value;
+  alert("sems_left= " + sems_left);
+  var gens_left = document.getElementById("gens-left").value;
+  alert("gens_left= " + gens_left);
   //get the id's of all of the checkboxes that are checked
   var checkedArray = new Array();
   var i = 0;
@@ -334,7 +350,8 @@ function degreeFinder(){
 
   // var dept1 = ;
   // var type1 = ;
-
+  alert("dept1= " + dept1); //works
+  alert("type1= "+ type1); //works
 
 //get the minor box that's checked, get it's dept
 
@@ -345,15 +362,7 @@ function degreeFinder(){
 ////////////jsonResponse
 
 
-
-
-
-
-
-
-
   window.location.replace("file:///Users/lahixson/Documents/GitHub/MajorPlanner/LidaFinalProject/results.html");
-  // alert(sems_left);
 
 }
 

@@ -96,20 +96,23 @@ function deptSubmit() {
     var length = jsonResponse.length;
       alert("length= " +length);
     var i = 0;
+    var displayLength=0;
+
     for(i; i < length; i++){
-      alert("in for loop");
-      alert("json= " + jsonResponse[i]);
+      if(displayLength==5){
+        $('#select-classes-div').append('<br>');
+        displayLength=0;
+      }
       var prog = jsonResponse[i].program;
       var num = jsonResponse[i].number;
       var id = prog + "-" + num;
-      alert("id= " + id);
       var checkbox = '<input onclick="" id="' + prog + '-' + num + '" class="menu" type="checkbox" name="dept" value="check"> '+ prog + ' ' + num + '';
       $('#select-classes-div').append(checkbox);
        checkBoxes[i] = id;
       displayLength++;
      }
 
-    alert(jsonResponse);
+    // alert(jsonResponse);
 
     // courses = jsonResponse.Courses;
     // alert(courses);

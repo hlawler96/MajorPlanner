@@ -4,7 +4,7 @@ $(document).ready(function () {
     if(window.localStorage.getItem('sessionId')){
        alert(window.localStorage.getItem('sessionId'))
     }else {
-      alert("NO Session Id");
+       alert("NO Session Id");
     }
   } else{
   alert("storage not supported by browser");
@@ -114,7 +114,10 @@ function deptSubmit() {
  }
 
  // Response handlers.
+ checkBoxes = new Array();
+
   xhr.onload = function() {
+    alert("in function");
     $('#select-classes-div').empty();
     var jsonResponse = JSON.parse(xhr.responseText);
     var length = jsonResponse.length;
@@ -128,8 +131,10 @@ function deptSubmit() {
       }
       var prog = jsonResponse[i].program;
       var num = jsonResponse[i].number;
+      var id = prog + "-" + num;
       var checkbox = '<input onclick="" id="' + prog + '-' + num + '" class="menu" type="checkbox" name="dept" value="check"> '+ prog + ' ' + num + '';
       $('#select-classes-div').append(checkbox);
+       checkBoxes[i] = id;
       displayLength++;
      }
   };
@@ -153,6 +158,21 @@ function deptSubmit() {
 function degreeFinder(){
   alert("in degreeFinder!");
   var sems_left = document.getElementById("sems-left").value;
+  //get the id's of all of the checkboxes that are checked
+
+  var checkedArray = new Array();
+  var i = 0;
+  var checkCount = 0;
+  for(i; i< checkBoxes.length; i++){
+    var box_checked = document.getElementById(checkBoxes[i]).checked;
+    if(box_checked){
+      checkedArray[checkCount] = checkBoxes[i];
+      checkCount++;
+    }
+  }
+  alert("checkedArray= " + checkedArray);
+
+
   window.location.replace("file:///Users/lahixson/Documents/GitHub/MajorPlanner/LidaFinalProject/results.html");
   alert(sems_left);
 

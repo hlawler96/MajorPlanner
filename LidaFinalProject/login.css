@@ -18,9 +18,10 @@
       color: #000000;
 
     }
-    #coursesToTake{
+    .tableClass{
       justify-content: center;
       margin-left: 50px;
+      width: 500px;
     }
 #log2{
   background-color:	#569ba9;

@@ -42,7 +42,7 @@ for(var i = 0; i < jsonResponse.looseRemainingCourses.length; i++){
   var num = jsonResponse.looseRemainingCourses[i].course.number;
   var temp = jsonResponse.looseRemainingCourses[i].requirement;
   if(temp != req){
-      $('#coursesToTake').append("<tr> <th>" + temp + "</th> <th> <ul id = 'loose" + i + "'> </ul> </th> </tr>")
+      $('#coursesToTake').append("<tr class= 'table'> <th>" + temp + "</th> <th> <ul id = 'loose" + i + "'> </ul> </th> </tr>")
       req = temp;
       j = i;
   }

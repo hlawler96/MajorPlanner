@@ -9,6 +9,13 @@
 #spacer{
   height: 20px;
 }
+.table{
+  border-radius: 5px;
+      border: 2px dashed;
+      padding: 20px;
+      width: 500px;
+
+    }
 #log2{
   background-color:	#569ba9;
   width: 600px;

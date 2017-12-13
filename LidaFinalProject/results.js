@@ -16,11 +16,11 @@ if (!xhr) {
 // Response handlers.
 xhr.onload = function() {
   var jsonResponse = JSON.parse(xhr.responseText);
-  for(var i=0; i<jsonResponse.length; i++;){
-  dept = jsonResponse.strictRemainingCourses[i].dept;
-  num = jsonResponse.strictRemainingCourses[i].number;
-}
-  alert(courses);
+  for(var i = 0; i < jsonResponse.length; i++)
+  var dept = jsonResponse.StrictRemainingCourses[i].dept;
+  var num = jsonResponse.StrictRemainingCourses[i].number;
+  var cors = dept + " " + num
+  alert(cors);
 };
 
 xhr.onerror = function() {

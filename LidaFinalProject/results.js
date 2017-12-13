@@ -20,7 +20,7 @@ xhr.onload = function() {
   var dept = jsonResponse.StrictRemainingCourses[i].dept;
   var num = jsonResponse.StrictRemainingCourses[i].number;
   var cors = dept + " " + cors;
-  $('#classesRemaining').append("<p>" + dept + num + "</p>");
+  $('#classesRemaining').append("<p>" + cors + "</p>");
   alert(cors);
 };
 

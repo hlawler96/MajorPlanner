@@ -24,7 +24,7 @@ xhr.onload = function() {
   var jsonResponse = JSON.parse(xhr.responseText);
   response = jsonResponse;
   if(jsonResponse.strictRemainingCourses.length > 0){
-    $('#coursesToTake').append("<tr> <th>Required</th> <th> <ul id = 'strict'> </ul> </th> </tr>")
+    $('#coursesToTake').append("<tr class = 'table'> <th>Required</th> <th> <ul id = 'strict'> </ul> </th> </tr>")
   }
 
   //strict remaining courses

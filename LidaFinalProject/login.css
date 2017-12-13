@@ -3,7 +3,7 @@
   width: 800px;
   height:auto;
   margin:auto;
-  margin-top: 14em;
+  /* margin-top: 14em; */
   border-radius: 10px;
 }
 #spacer{
@@ -43,7 +43,7 @@ display: inline;
 
 .loginForm img{
   width: 100px;
-  height:80px;
+  /* height:80px; */
   margin-top: 20px;
   margin-bottom: 30px;
   border-radius: 10px;

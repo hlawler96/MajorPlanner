@@ -19,7 +19,8 @@ xhr.onload = function() {
   for(var i = 0; i < jsonResponse.length; i++)
   var dept = jsonResponse.StrictRemainingCourses[i].dept;
   var num = jsonResponse.StrictRemainingCourses[i].number;
-  $('#classesRemaining').append("<p>" + dept + num + "</p>");
+  var cors = dept + " " + cors;
+  $('#classesRemaining').append("<p>" + cors + "</p>");
   alert(cors);
 };
 

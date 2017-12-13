@@ -86,26 +86,26 @@ function deptSubmit() {
    alert('CORS not supported');
    return;
  }
+
  // Response handlers.
   xhr.onload = function() {
+    $('#select-classes-div').empty();
     var jsonResponse = JSON.parse(xhr.responseText);
     var length = jsonResponse.length;
       alert("length= " +length);
     var i = 0;
+    var displayLength = 0;
     for(i; i < length; i++){
+      if(displayLength==5){
+        $('#select-classes-div').append('<br>');
+        displayLength=0;
+      }
       var prog = jsonResponse[i].program;
       var num = jsonResponse[i].number;
-
-      var checkbox = '<input onclick="" class="menu" type="checkbox" name="dept" value="chk1">';
-      // $("#select-classes-div").empty();
-      $('#select-classes-div').append(checkbox + " " + prog + " " + num);
-
+      var checkbox = '<input onclick="" id="' + prog + '-' + num + '" class="menu" type="checkbox" name="dept" value="check"> '+ prog + ' ' + num + '';
+      $('#select-classes-div').append(checkbox);
+      displayLength++;
      }
-
-    alert(jsonResponse);
-
-    // courses = jsonResponse.Courses;
-    // alert(courses);
   };
 
   xhr.onerror = function() {
@@ -113,9 +113,6 @@ function deptSubmit() {
   };
 
   xhr.send();
-
-
-
 
   var sems_input = '<input id="sems-left" type=number max=7 minimum=1 placeholder="Enter Number">';
   $("#sems-left-input-div").empty();
@@ -130,7 +127,7 @@ function deptSubmit() {
 function degreeFinder(){
   alert("in degreeFinder!");
   var sems_left = document.getElementById("sems-left").value;
-  window.location.replace("file:///C:/Users/farmerma/Documents/GitHub/MajorPlanner/LidaFinalProject/results.html/");
+  window.location.replace("file:///Users/lahixson/Documents/GitHub/MajorPlanner/LidaFinalProject/results.html");
   alert(sems_left);
 
 }

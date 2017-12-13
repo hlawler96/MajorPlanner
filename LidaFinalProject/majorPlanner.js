@@ -267,7 +267,7 @@ function minorSubmit(dept){
  }
  // Response handlers.
 
- minorCheckBoxes= new Array();
+ minorCheckBoxes= [];
 
   xhr.onload = function() {
     // alert("in function");
@@ -310,19 +310,22 @@ function minorSubmit(dept){
 
 
 function degreeFinder(){
-  // alert("in degreeFinder!");
   var sems_left = document.getElementById("sems-left").value;
-  alert("sems_left= " + sems_left);
   var gens_left = document.getElementById("gens-left").value;
-  alert("gens_left= " + gens_left);
-  //get the id's of all of the checkboxes that are checked
   var checkedArray = new Array();
   var i = 0;
   var checkCount = 0;
-  // alert("checkBoxes= " + checkBoxes);
-  // alert("minorCheckBoxes= " + minorCheckBoxes);
-
-
+  var type2 = "Minor";
+  deptObj1 = {"name":dept1, "type":type1};
+  deptObj2 = {"name":dept2, "type":type2};
+  currDept = [deptObj1, deptObj2];
+  son = {};
+  deptTaken = [];
+  son ["sessionId"] = window.localStorage.getItem('sessionId');
+  son ["deptTaken"] = deptTaken;
+  son ["currDept"] = currDept;
+  son ["semLeft"] = sems_left;
+  son ["genEdsLeft"] = gens_left;
   for(i; i< checkBoxes.length; i++){
     var box_checked = document.getElementById(checkBoxes[i]).checked;
     if(box_checked){
@@ -330,7 +333,6 @@ function degreeFinder(){
       checkCount++;
     }
   }
-  // alert("checkedArray= " + checkedArray);
   var j = 0;
   var minorCheckCount = 0;
   var minorCheckedArray = new Array();
@@ -341,28 +343,28 @@ function degreeFinder(){
       minorCheckCount++;
     }
   }
-  // alert("minorCheckedArray= " + minorCheckedArray);
-
   var allCheckedClasses = checkedArray.concat(minorCheckedArray);
-  alert("allCheckedClasses= " + allCheckedClasses);
 
-//get the major box that's checked, get it's dept and type
-
-  // var dept1 = ;
-  // var type1 = ;
-  alert("dept1= " + dept1); //works
-  alert("type1= "+ type1); //works
-
-//get the minor box that's checked, get it's dept
-
-  alert("dept2= " + dept2); //works
-  var type2 = "Minor";
-  alert("type2= " + type2); //works
-
-////////////jsonResponse
-
-
-  window.location.replace("file:///Users/lahixson/Documents/GitHub/MajorPlanner/LidaFinalProject/results.html");
+  for(i; i<allCheckedClasses.length; i++){
+    k = deptTaken.length;
+    var found = false;
+    d = allCheckedClasses[i].split('-')[0];
+    n = allCheckedClasses[i].split('-')[1];
+    for(j; j<deptTaken.length; j++){
+      if(deptTaken[j].name == d){
+      found = true;
+      k = j;
+      }
+    }
+    if(found){
+      deptTaken[k].coursesTaken.push({"dept":d,"num":n}) ;
+    }else{
+      dT = {"name":d, "coursesTaken":[{"dept":d,"num":n}]};
+      deptTaken.push(dT);
+    }
+  }
+  alert(JSON.stringify(son));
+  // window.location.replace("file:///Users/lahixson/Documents/GitHub/MajorPlanner/LidaFinalProject/results.html");
 
 }
 

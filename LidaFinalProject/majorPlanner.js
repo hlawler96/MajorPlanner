@@ -102,7 +102,7 @@ function deptSubmit() {
       var checkbox = '<input onclick="" id="' + prog + '-' + num + '" class="menu" type="checkbox" name="dept" value="check"> '+ prog + ' ' + num + '';
       $('#select-classes-div').append(checkbox);
        checkBoxes[i] = id;
-      displayLength++;
+      //displayLength++;
      }
 
     alert(jsonResponse);

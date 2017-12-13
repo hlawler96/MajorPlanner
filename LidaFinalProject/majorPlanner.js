@@ -97,9 +97,12 @@ function deptSubmit() {
       alert("length= " +length);
     var i = 0;
     for(i; i < length; i++){
+      alert("in for loop");
+      alert("json= " + jsonResponse[i]);
       var prog = jsonResponse[i].program;
       var num = jsonResponse[i].number;
       var id = prog + "-" + num;
+      alert("id= " + id);
       var checkbox = '<input onclick="" id="' + prog + '-' + num + '" class="menu" type="checkbox" name="dept" value="check"> '+ prog + ' ' + num + '';
       $('#select-classes-div').append(checkbox);
        checkBoxes[i] = id;

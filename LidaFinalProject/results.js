@@ -2,16 +2,16 @@
 $(document).ready(function () {
   console.log("The js is hooked up");
   sessionId=  window.localStorage.getItem('sessionId');
-  alert("about to try populate");
+  // alert("about to try populate");
+  response = ""
   populateCoursesTaken();
-  populatePossiblePrograms();
 });
 
 
 function populateCoursesTaken(){
-alert("first line of populate");
+// alert("first line of populate");
 API_URL = "http://ec2-18-217-72-185.us-east-2.compute.amazonaws.com:8080/PossiblePrograms/?sessionId=" + sessionId;
-alert(API_URL);
+// alert(API_URL);
 var xhr = createCORSRequest('GET', API_URL);
 xhr.responseType = 'text';
 if (!xhr) {
@@ -22,6 +22,9 @@ if (!xhr) {
 xhr.onload = function() {
   var displayLength = 0;
   var jsonResponse = JSON.parse(xhr.responseText);
+  response = jsonResponse;
+
+  //strict remaining courses
   for(var i = 0; i < jsonResponse.strictRemainingCourses.length; i++){
     if(displayLength == 5){
       $('#classesRemaining').append('<br>');
@@ -32,46 +35,47 @@ xhr.onload = function() {
   $('#classesRemaining').append("<span class = 'remainingCourse'>" + dept + " " + num + "</span> ");
   displayLength++;
 }
-};
 
-
-xhr.onerror = function() {
-    alert('FAILURE');
-};
-
-xhr.send();
-}
-
-
-
-
-function populatePossiblePrograms(){
-API_URL = "http://ec2-18-217-72-185.us-east-2.compute.amazonaws.com:8080/Result/?sessionId=" + sessionId;
-alert(API_URL);
-var xhr = createCORSRequest('GET', API_URL);
-xhr.responseType = 'text';
-if (!xhr) {
- alert('CORS not supported');
- return;
-}
-// Response handlers.
-xhr.onload = function() {
-  var displayLength = 0;
-  var jsonResponse = JSON.parse(xhr.responseText);
-  alert("about to write");
-  for(var i = 0; i < jsonResponse.Result.length; i++){
-    // if(displayLength == 5){
-    //   $('#classesRemaining').append('<br>');
-    //   displayLength = 0;
-    // }
+//possible programs
+for(var i = 0; i < jsonResponse.possiblePrograms.length; i++){
   var dept = jsonResponse.possiblePrograms[i].dept;
   var type = jsonResponse.possiblePrograms[i].type;
-  $('#majorsAvailable').append("<span class = 'remainingCourse'>" + dept + " " + type + "</span> ");
-  // displayLength++;
+  $('#majors').append("<option value='" + dept + " " + type + "'>" + dept + " " + type + "</option>");
 }
+
+
+
 };
+
+
 xhr.onerror = function() {
     alert('FAILURE');
 };
+
 xhr.send();
+}
+
+
+function createCORSRequest(method, url) {
+  var xhr = new XMLHttpRequest();
+  if ("withCredentials" in xhr) {
+
+    // Check if the XMLHttpRequest object has a "withCredentials" property.
+    // "withCredentials" only exists on XMLHTTPRequest2 objects.
+    xhr.open(method, url, true);
+
+  } else if (typeof XDomainRequest != "undefined") {
+
+    // Otherwise, check if XDomainRequest.
+    // XDomainRequest only exists in IE, and is IE's way of making CORS requests.
+    xhr = new XDomainRequest();
+    xhr.open(method, url);
+
+  } else {
+
+    // Otherwise, CORS is not supported by the browser.
+    xhr = null;
+
+  }
+  return xhr;
 }

@@ -20,11 +20,10 @@ if (!xhr) {
 // Response handlers.
 xhr.onload = function() {
   var jsonResponse = JSON.parse(xhr.responseText);
-
   for(var i = 0; i < jsonResponse.strictRemainingCourses.length; i++){
-  var dept = jsonResponse.strictRemainingCourses[i].dept;
+  var dept = jsonResponse.strictRemainingCourses[i].program;
   var num = jsonResponse.strictRemainingCourses[i].number;
-  $('#classesRemaining').append("<p>" + dept + " " + num + "</p>");
+  $('#classesRemaining').append("<p class = 'remainingCourse'>" + dept + " " + num + "</p>");
 }
 };
 

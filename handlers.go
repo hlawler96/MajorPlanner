@@ -42,7 +42,9 @@ func getCourses(w http.ResponseWriter, r *http.Request) {
   }
 
   rows, err := db.Query(sql)
-  if err != nil {
+  if err == sql.ErrNoRows {
+    log.Println("empty sql result")
+  }else if err != nil {
     log.Fatal(err)
   }
   defer rows.Close()
@@ -153,6 +155,7 @@ w.Header().Set("Access-Control-Allow-Origin", "*")
 
   // Prepare statement for inserting data
 	stmtInsUser, err := db.Prepare("INSERT INTO Users (user, pass) VALUES (?,?)")
+
 	if err != nil {
 		panic(err.Error())
 	}
@@ -173,7 +176,9 @@ w.Header().Set("Access-Control-Allow-Origin", "*")
       _, err = stmtInsUser.Exec(user[0],pass[0])
 
       err = db.QueryRow("SELECT U.id FROM Users U WHERE U.user = ?", user[0]).Scan(&id)
-      if err != nil {
+      if err == sql.ErrNoRows {
+        log.Println("empty sql result")
+      }else if err != nil {
         log.Fatal(err)
       }
       res.SessionId = RandStringGenerator(30)
@@ -213,7 +218,9 @@ func GetCoursesTaken(w http.ResponseWriter, r *http.Request){
    //get courses that a specific user has taken
    str := "SELECT C.id, C.creditHours, C.cNumber, C.dept FROM Courses C, CoursesTaken CT, UserSessions US WHERE C.id = CT.cid and CT.uid = US.uid and US.sessionId = ?"
    rows, err := db.Query(str, sessionId[0])
-   if err != nil {
+   if err == sql.ErrNoRows {
+     log.Println("empty sql result")
+   }else if err != nil {
      log.Fatal(err)
    }
    defer rows.Close()
@@ -292,9 +299,11 @@ func PostUserInformation(w http.ResponseWriter, r *http.Request){
   var id int
   err = db.QueryRow("SELECT U.id FROM Users U, UserSessions US WHERE US.uid = U.id and US.sessionId = ?", user_info.SessionId).Scan(&id)
 
-  	if err != nil {
-  		log.Fatal(err)
-    }
+  if err == sql.ErrNoRows {
+    log.Println("empty sql result")
+  }else if err != nil {
+    log.Fatal(err)
+  }
 
       // Prepare statements for inserting data
       stmtInsUser, err := db.Prepare("UPDATE Users SET Users.semLeft = ?, Users.genEdsLeft = ?, Users.programOne = ?, Users.programTwo = ? WHERE Users.id = ?")
@@ -318,15 +327,19 @@ func PostUserInformation(w http.ResponseWriter, r *http.Request){
       remCourses.Exec(id)
       pid1, pid2 := 0, 0
       err = db.QueryRow("SELECT P.id FROM Program P WHERE P.dept = ? and P.type = ?", user_info.CurrDept[0].Name , user_info.CurrDept[0].Type).Scan(&pid1)
-      if err != nil {
-        panic(err.Error())
+      if err == sql.ErrNoRows {
+        log.Println("empty sql result")
+      }else if err != nil {
+        log.Fatal(err)
       }
       if len(user_info.CurrDept) == 1{
         user_info.CurrDept = append(user_info.CurrDept, Program{"",""})
       }else {
         err = db.QueryRow("SELECT P.id FROM Program P WHERE P.dept = ? and P.type = ?", user_info.CurrDept[1].Name , user_info.CurrDept[1].Type).Scan(&pid2)
-        if err != nil {
-          panic(err.Error())
+        if err == sql.ErrNoRows {
+          log.Println("empty sql result")
+        }else if err != nil {
+          log.Fatal(err)
         }
       }
 
@@ -336,8 +349,10 @@ func PostUserInformation(w http.ResponseWriter, r *http.Request){
           for _, course := range dept.CoursesTaken {
             var cid int
             err = db.QueryRow("SELECT C.id FROM Courses C WHERE C.cNumber = ? and C.dept = ?", course.Number, dept.Name).Scan(&cid)
-            if err != nil {
-              panic(err.Error())
+            if err == sql.ErrNoRows {
+              log.Println("empty sql result")
+            }else if err != nil {
+              log.Fatal(err)
             }
             stmtInsCourses.Exec(id, cid)
           }
@@ -358,7 +373,7 @@ func GetResult(w http.ResponseWriter, r *http.Request){
      StrictRemainingCourses     Courses             `json:"strictRemainingCourses"`
      LooseRemainingCourses      []LooseReqCourse    `json:"looseRemainingCourses"`
      PossibleProg               []PossibleProgram   `json:"possiblePrograms"`
-     OrderOfPrereqs             []PreReq           `json:"orderOfPrereqs"`
+     OrderOfPrereqs             []PreReq            `json:"orderOfPrereqs"`
   }
   //connect to db
   db, err := sql.Open("mysql", "mason:pineappleB2@tcp(comp426finalproject.cqu5t9sfyvwq.us-east-2.rds.amazonaws.com:3306)/planner" )
@@ -372,7 +387,9 @@ func GetResult(w http.ResponseWriter, r *http.Request){
   "and (C.id = CT.cid and CT.uid = U.id )) as count FROM  Program P, ProgramRequirements PR, Users U, UserSessions US WHERE P.id = PR.pid and U.id = US.uid and " +
   "US.sessionId = ?  and  (U.programOne = P.id or U.programTwo = P.id ) and PR.req != 'required' GROUP BY PR.req"
   rows1, err := db.Query(str, sessionId[0], sessionId[0])
-  if err != nil {
+  if err == sql.ErrNoRows {
+    log.Println("empty sql result")
+  }else if err != nil {
     log.Fatal(err)
   }
   defer rows1.Close()
@@ -405,8 +422,10 @@ func GetResult(w http.ResponseWriter, r *http.Request){
              "WHERE  C.id = CP.cid and PR.id = CP.prid and PR.pid = P.id and (P.id = U.programOne or P.id = U.programTwo) and U.id = US.uid and US.sessionId = ? and PR.req = ? and C.id NOT IN " +
              "(SELECT C.id from Courses C, CoursesTaken CT, Users U, UserSessions US WHERE C.id = CT.cid and CT.uid = U.id and U.id = US.uid and US.sessionId = ?)"
        rows, err := db.Query(str, sessionId[0], key, sessionId[0])
-       if err != nil {
-          log.Fatal(err)
+       if err == sql.ErrNoRows {
+         log.Println("empty sql result")
+       }else if err != nil {
+         log.Fatal(err)
        }
        defer rows.Close()
        for rows.Next() {
@@ -429,7 +448,9 @@ func GetResult(w http.ResponseWriter, r *http.Request){
   "US.uid = U.id and (U.programOne = P.id or U.programTwo = P.id) and PR.req = 'required' and C.id NOT IN (Select C.id from Courses C, Users U, UserSessions US, " +
   "CoursesTaken CT WHERE US.sessionId = ? and US.uid = U.id and CT.uid = U.id and CT.cid = C.id)"
   rows2, err := db.Query(str, sessionId[0], sessionId[0])
-  if err != nil {
+  if err == sql.ErrNoRows {
+    log.Println("empty sql result")
+  }else if err != nil {
     log.Fatal(err)
   }
   defer rows2.Close()
@@ -450,7 +471,9 @@ func GetResult(w http.ResponseWriter, r *http.Request){
 
    semLeft, genEds:= 0,0
    err = db.QueryRow("SELECT U.genEdsLeft, U.semLeft FROM Users U, UserSessions US WHERE U.id = US.uid and US.sessionId = ?", sessionId[0]).Scan(&genEds, &semLeft)
-   if err != nil {
+   if err == sql.ErrNoRows {
+     log.Println("empty sql result")
+   }else if err != nil {
      log.Fatal(err)
    }
   //used to calculate the number of hours of looseRemaining Courses that the person has left
@@ -458,7 +481,9 @@ func GetResult(w http.ResponseWriter, r *http.Request){
    classesRemaining := semLeft*6 - count
 
    rows3, err := db.Query("SELECT P.dept, P.type FROM Program P, Users U, UserSessions US WHERE P.numClasses <= ?  and U.id = US.uid and US.sessionId = ? and P.dept NOT IN (SELECT P.dept FROM Program P Where P.id = U.programOne or P.id = U.programTwo)", classesRemaining, sessionId[0])
-   if err != nil {
+   if err == sql.ErrNoRows {
+     log.Println("empty sql result")
+   }else if err != nil {
      log.Fatal(err)
    }
    defer rows3.Close()
@@ -482,7 +507,9 @@ func GetResult(w http.ResponseWriter, r *http.Request){
       "US.sessionId = ?  and P.dept = ? and P.type = ? and PR.req != 'required' GROUP BY PR.req"
 
       rows4, err := db.Query(str, sessionId[0], sessionId[0],  possProgram.Dept, possProgram.Type, )
-      if err != nil {
+      if err == sql.ErrNoRows {
+        log.Println("empty sql result")
+      }else if err != nil {
         log.Fatal(err)
       }
       defer rows4.Close()
@@ -511,8 +538,10 @@ func GetResult(w http.ResponseWriter, r *http.Request){
                  "WHERE P.dept = ? and P.type = ? and C.id = CP.cid and PR.id = CP.prid and PR.pid = P.id and PR.req = ? and C.id NOT IN " +
                  "(SELECT C.id from Courses C, CoursesTaken CT, Users U, UserSessions US WHERE C.id = CT.cid and CT.uid = U.id and U.id = US.uid and US.sessionId = ?)"
            rows, err := db.Query(str, possProgram.Dept, possProgram.Type, key, sessionId[0])
-           if err != nil {
-              log.Fatal(err)
+           if err == sql.ErrNoRows {
+             log.Println("empty sql result")
+           }else if err != nil {
+             log.Fatal(err)
            }
            defer rows.Close()
            for rows.Next() {
@@ -537,7 +566,9 @@ func GetResult(w http.ResponseWriter, r *http.Request){
        "C.id = CP.cid and CP.prid = PR.id and P.dept = ? and P.type = ? and PR.req = 'required' AND C.id NOT IN ( Select CT.cid FROM Users U, UserSessions US, " +
          "CoursesTaken CT WHERE US.sessionId = ? and US.uid = U.id and CT.uid = U.id) "
        rows5, err := db.Query(str, possProgram.Dept, possProgram.Type, sessionId[0])
-       if err != nil {
+       if err == sql.ErrNoRows {
+         log.Println("empty sql result")
+       }else if err != nil {
          log.Fatal(err)
        }
        defer rows5.Close()
@@ -614,7 +645,9 @@ func GetUserInfo(w http.ResponseWriter, r *http.Request){
   usr := new(User)
   str := "SELECT U.id, U.user, U.semLeft, U.genEdsLeft, U.programOne, U.programTwo from Users U, UserSessions US WHERE US.uid = U.id and US.sessionId = ?"
   err = db.QueryRow(str , sessionId[0]).Scan(&usr.Id, &usr.Username, &usr.SemLeft, &usr.GenEdsLeft, &usr.ProgramOne, &usr.ProgramTwo)
-  if err != nil {
+  if err == sql.ErrNoRows {
+    log.Println("empty sql result")
+  }else if err != nil {
     log.Fatal(err)
   }
 

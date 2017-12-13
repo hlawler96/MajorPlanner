@@ -23,7 +23,7 @@ func getCourses(w http.ResponseWriter, r *http.Request) {
  if err != nil {
    log.Fatal(err)
  }
- sql := "select C.id, C.creditHours, C.cNumber, C.dept from Courses C"
+ query := "select C.id, C.creditHours, C.cNumber, C.dept from Courses C"
  //check for dept param
  dept, ok1 := r.URL.Query()["dept"]
 
@@ -37,10 +37,10 @@ func getCourses(w http.ResponseWriter, r *http.Request) {
  if !ok || len(Ptype) < 1 {
 
   }else{
-    sql = "SELECT C.id, C.creditHours, C.cNumber, C.dept FROM Courses C, Program P, ProgramRequirements PR, CoursesInProgram CP where P.id = PR.pid and CP.prid = PR.id and C.id = CP.cid and P.dept = '" + dept[0] + "' and P.type = '" + Ptype[0] + "' "
+    query = "SELECT C.id, C.creditHours, C.cNumber, C.dept FROM Courses C, Program P, ProgramRequirements PR, CoursesInProgram CP where P.id = PR.pid and CP.prid = PR.id and C.id = CP.cid and P.dept = '" + dept[0] + "' and P.type = '" + Ptype[0] + "' "
   }
 
-  rows, err := db.Query(sql)
+  rows, err := db.Query(query)
   if err == sql.ErrNoRows {
     log.Println("empty sql result")
   }else if err != nil {

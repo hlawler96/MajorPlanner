@@ -1,7 +1,7 @@
 .loginForm{
   background-color:	#C4B7C1;
   width: 800px;
-  height:1900px;
+  height:auto;
   margin:auto;
   margin-top: 14em;
   border-radius: 10px;
@@ -25,7 +25,7 @@
 #log2{
   background-color:	#569ba9;
   width: 600px;
-  height:1750px;
+  height: auto;
   margin: auto;
   border-radius: 10px;
 }

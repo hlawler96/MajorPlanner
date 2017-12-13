@@ -3,7 +3,7 @@ $(document).ready(function () {
   console.log("The js is hooked up");
   sessionId=  window.localStorage.getItem('sessionId');
   // alert("about to try populate");
-  response = ""
+
   populateCoursesTaken();
 });
 
@@ -67,6 +67,20 @@ xhr.onerror = function() {
 };
 
 xhr.send();
+}
+function selectAdditionalDegree() {
+  var major = $('#majors :selected').val();
+  var dept = major.split(' ')[0];
+  var type = major.split(' ')[1];
+  for(var i = 0; i < response.possiblePrograms.length; i++){
+      if(response.possiblePrograms[i].dept == dept && response.possiblePrograms[i].type == type){
+        for(var j = 0 ; j < response.possiblePrograms[i].strictRemainingCourses.length ; j++){
+           response.possiblePrograms[i].strictRemainingCourses[j]
+        }
+      }
+  }
+
+
 }
 
 

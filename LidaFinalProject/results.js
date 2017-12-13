@@ -23,17 +23,16 @@ xhr.onload = function() {
   var displayLength = 0;
   var jsonResponse = JSON.parse(xhr.responseText);
   response = jsonResponse;
+  if(jsonResponse.strictRemainingCourses.length > 0){
+    $('#coursesToTake').append("<tr> <th>Required</th> <th> <ul id = 'strict'> </ul> </th> </tr>")
+  }
 
   //strict remaining courses
   for(var i = 0; i < jsonResponse.strictRemainingCourses.length; i++){
-    if(displayLength == 5){
-      $('#classesRemaining').append('<br>');
-      displayLength = 0;
-    }
   var dept = jsonResponse.strictRemainingCourses[i].program;
   var num = jsonResponse.strictRemainingCourses[i].number;
-  $('#strictClassesRemaining').append("<span class = 'remainingCourse'>" + dept + " " + num + "</span> ");
-  displayLength++;
+  $('#strict').append("<li class = courses> " + dept + " " + num + " </li>");
+
 }
 //loose remaining courses
 req = ""
@@ -43,12 +42,12 @@ for(var i = 0; i < jsonResponse.looseRemainingCourses.length; i++){
   var num = jsonResponse.looseRemainingCourses[i].course.number;
   var temp = jsonResponse.looseRemainingCourses[i].requirement;
   if(temp != req){
-      $('#looseClassesRemaining').append("<span> " + temp + " <ul id = '" + i + "'> </ul> </span>");
+      $('#coursesToTake').append("<tr> <th>" + temp + "</th> <th> <ul id = 'loose" + i + "'> </ul> </th> </tr>")
       req = temp;
       j = i;
   }
   //do CSS for this
-  $('#' + j).append("<li class = 'looseCourses'>" + dept + " " + num + "</li> ");
+  $('#loose' + j).append("<li class = 'courses'>" + dept + " " + num + "</li> ");
 }
 
 //possible programs

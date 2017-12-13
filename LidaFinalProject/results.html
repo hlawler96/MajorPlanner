@@ -35,8 +35,7 @@
         Class Results
       </div>
     </div>
-    <br>
-    <br>
+
     <div class = "loginForm">
       <form id="login-form" class="login">
         <div id = "spacer">
@@ -44,22 +43,24 @@
         <div class = "loginForm2" id="log2">
           <p>Remaining Major Classes:</p>
 
-          <div id = "strictClassesRemaining">
+          <table id = "coursesToTake" class='tableClass'>
+            <tr class = "table">
+              <th>Requirement</th>
+              <th>Courses</th>
+            </tr>
 
-          </div>
-          <div id = "looseClassesRemaining">
+          </table>
 
-          </div>
           <p> Other Majors/Minors Available: </p>
-          <div id = "majorsAvailable" >
 
-          </div>
           <select id = "majors">
 
 
           </select>
-          <input onclick="selectAdditionalDegree()" type="submit" name="submit" value="Update" class ="btn-login">
 
+          <input onclick="selectAdditionalDegree()" name="submit" value="Update" class ="btn-login">
+
+          <div id="selectedProgram"></div>
 <br>
 <div id= "avgHours">
   <p> Average hours per semester to graduate:</p>
@@ -68,8 +69,8 @@
 </div>
 
 <div id= "orderPrereqs">
-  <p> Order of Prerequisites: </p>
-  <div id = "prereqs">
+  <p> Order of Prerequisites For Current Programs: </p>
+  <div id = "currPrereqs">
   </div>
 </div>
         <input type="button" onclick="self.location='planner.html'" name="button" value="Return to Planner" class="btn-register">

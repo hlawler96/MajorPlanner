@@ -10,29 +10,36 @@
   margin-left: 20px;
 }
 
+#thisOne{
+  background-image: url("background.jpeg");
+  height: 400px;
+}
 .top-ad {
-  height: 700px;
+  height: auto;
   position: relative;
   text-align: center;
   background-image: url("background.jpeg");
+  background-repeat: no-repeat;
+background-attachment: fixed;
   background-size: 100%;
 
 }
 
 .title-div {
-  position: absolute;
   top: 10%;
   width: 100%;
   text-align: center;
 }
 
 .title {
+  margin-top: 56px;
+  padding-top: 20px;
   font: Georgia;
   font-size: 100px;
 }
  .sub-title {
    font: Georgia;
-   font-size: 20px;
+   font-size: 50px;
  }
 
  .flow-chart-row {

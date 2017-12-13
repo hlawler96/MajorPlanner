@@ -1,18 +1,32 @@
 .loginForm{
   background-color:	#C4B7C1;
   width: 800px;
-  height:600px;
+  height:auto;
   margin:auto;
-  margin-top: 14em;
+  /* margin-top: 14em; */
   border-radius: 10px;
 }
 #spacer{
   height: 20px;
 }
+.table{
+  border-radius: 50px;
+      border: 2px dashed;
+      padding: 200px;
+      width: 500px;
+      background-color: #000000;
+      color: #000000;
+
+    }
+    .tableClass{
+      justify-content: center;
+      margin-left: 50px;
+      width: 500px;
+    }
 #log2{
   background-color:	#569ba9;
   width: 600px;
-  height:500px;
+  height: auto;
   margin: auto;
   border-radius: 10px;
 }
@@ -30,7 +44,7 @@ display: inline;
 
 .loginForm img{
   width: 100px;
-  height:80px;
+  /* height:80px; */
   margin-top: 20px;
   margin-bottom: 30px;
   border-radius: 10px;

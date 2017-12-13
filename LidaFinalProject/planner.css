@@ -25,13 +25,13 @@
   background-color: #4f9BA2;
 }
 #sems-left-input-div{
-  float:left;
-  margin-top: 7em;
+  float: left;
+  margin-top: 8em;
   padding-left: 20px;
 }
 #submt-classes-div{
   margin: auto;
-  margin-top: 9em;
+  margin-top: 12em;
   float:left;
 }
 #submt-classes{
@@ -43,5 +43,12 @@
 }
 #select-classes-div{
   padding-left: 12em;
+  text-align: left;
+}
+#minor-checkboxes{
+  float:left;
+}
+#select-minor-classes-div{
+  padding-left: 10em;
   text-align: left;
 }

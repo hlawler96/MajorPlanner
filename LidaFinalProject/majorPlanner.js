@@ -2,9 +2,9 @@ $(document).ready(function () {
   console.log("The js is hooked up");
   if(typeof(Storage)!=="undefined"){
     if(window.localStorage.getItem('sessionId')){
-       alert(window.localStorage.getItem('sessionId'))
+       // alert(window.localStorage.getItem('sessionId'))
     }else {
-       alert("NO Session Id");
+       // alert("NO Session Id");
     }
   } else{
   alert("storage not supported by browser");

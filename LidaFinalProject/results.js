@@ -57,6 +57,25 @@ for(var i = 0; i < jsonResponse.possiblePrograms.length; i++){
   $('#majors').append("<option value='" + dept + " " + type + "'>" + dept + " " + type + "</option>");
 }
 
+//prereqs
+$('#currPrereqs').append("<table id = 'prereqs' class='tableClass' ><tr class='table'><th>Requirement</th><th>Courses</th></tr></table>");
+for(var i = 0; i < jsonResponse.orderOfPrereqs.length; i++){
+  var course = jsonResponse.orderOfPrereqs[i].Courses[0];
+  var type = jsonResponse.orderOfPrereqs[i].Type;
+    if(jsonResponse.orderOfPrereqs[i].Courses.length > 2){
+      var program = course.program.split(' ')[0];
+      var number = course.number;
+
+      $('#prereqs').append("<tr class= 'table'> <th>" + course.program + " " + course.number + "</th> <th> <ul id = '" + program+ "_" + number + "'> </ul> </th> </tr>");
+      for(var j = 1; j < jsonResponse.orderOfPrereqs[i].Courses.length ; j++){
+        $('#'+program+"_"+number).append("<li>" + jsonResponse.orderOfPrereqs[i].Courses[j].program + " " + jsonResponse.orderOfPrereqs[i].Courses[j].number + "</li>");
+      }
+    }else{
+        $('#prereqs').append("<tr class= 'table'> <th>" + course.program + " " + course.number + "</th> <th> " + jsonResponse.orderOfPrereqs[i].Courses[1].program + " " + jsonResponse.orderOfPrereqs[i].Courses[1].number + " </th> </tr>");
+    }
+
+}
+
 
 
 };
@@ -76,16 +95,39 @@ function selectAdditionalDegree() {
 
   $('#selectedProgram').empty();
 
-  $('#selectedProgram').append("<table id = 'possCoursesToTake' ><tr class='table'><th>Requirement</th><th>Courses</th></tr></table>");
+  $('#selectedProgram').append("<table id = 'possCoursesToTake' class='tableClass' ><tr class='table'><th>Requirement</th><th>Courses</th></tr></table>");
 
   for(var i = 0; i < response.possiblePrograms.length; i++){
 
       if(response.possiblePrograms[i].dept.split(' ')[0] == dept && response.possiblePrograms[i].type == type){
-        alert("dept: " + dept + " type: " + type);
-        $('#possCoursesToTake').append("<tr class='table'><th>Required</th><th><ul id='possStrict'></ul></th></tr>")
+
+        //poss strict courses
+        // alert("dept: " + dept + " type: " + type);
+        $('#possCoursesToTake').append("<tr class='table' ><th>Required</th><th><ul id='possStrict'></ul></th></tr>")
         for(var j = 0 ; j < response.possiblePrograms[i].strictRemainingCourses.length ; j++){
           $('#possStrict').append("<li class = 'courses'>" + response.possiblePrograms[i].strictRemainingCourses[j].program + " " + response.possiblePrograms[i].strictRemainingCourses[j].number + " </li> ")
         }
+
+        req = ""
+        k = 0;
+        //poss loose courses
+        for(var j = 0; j < response.possiblePrograms[i].looseRemainingCourses.length; j++){
+          var dept = response.possiblePrograms[i].looseRemainingCourses[j].course.program;
+          var num = response.possiblePrograms[i].looseRemainingCourses[j].course.number;
+          var temp = response.possiblePrograms[i].looseRemainingCourses[j].requirement;
+          // alert("Dept: " + dept + " num: " + num);
+          if(temp != req){
+              $('#possCoursesToTake').append("<tr class='table' ><th>" + temp + "</th><th><ul id='possLoose" + j + "'></ul></th></tr>");
+              req = temp;
+              k = j;
+          }
+          $('#possLoose' + k).append("<li class = 'courses'>" + dept + " " + num + "</li> ");
+        }
+
+        //average hours per semester
+        $('#hours').append("<span>" + response.possiblePrograms[i].avgHoursPerSem + "</span>")
+
+
       }
   }
 

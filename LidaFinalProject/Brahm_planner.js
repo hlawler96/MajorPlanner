@@ -4,45 +4,63 @@ $(document).ready(function () {
     if(window.localStorage.getItem('sessionId')){
        alert(window.localStorage.getItem('sessionId'))
     }else {
-       alert("NO Session Id");
+      alert("NO Session Id");
     }
   } else{
   alert("storage not supported by browser");
   }
-  var fun = function(e){
-      if(e.keyCode==13) loginSubmit();
-  }
-  $('#uname').keypress(fun);
-  $('#pass').keypress(fun);
 });
 
+
+//get values for username and password from website
+//store them in variables
+//print them to console
+//then add api calls to get them and check them
 function loginSubmit() {
+
   uname = document.getElementById("uname").value;
   var pass = document.getElementById("pass").value;
+
+
   API_URL = "http://ec2-18-217-72-185.us-east-2.compute.amazonaws.com:8080/Login/?username=" + uname + "&password=" + pass;
   sessionId = "";
   var xhr = createCORSRequest('GET', API_URL);
+
   xhr.responseType = 'text';
  if (!xhr) {
    alert('CORS not supported');
    return;
  }
+
  // Response handlers
   xhr.onload = function() {
     var jsonResponse = JSON.parse(xhr.responseText);
-    alert(jsonResponse.sessionId);
     window.localStorage.setItem('sessionId',jsonResponse.sessionId);
     if( jsonResponse.sessionId == ""){
       alert("Not a valid login");
     }else {
       alert(window.localStorage.getItem('sessionId'));
+
     }
-     window.location.href = "results.html";
+
   };
+
   xhr.onerror = function() {
       alert('FAILURE');
   };
+
   xhr.send();
+
+  //call API, check if they match
+}
+
+function registerSubmit() {
+  alert("in registerSubmit!");
+  uname = document.getElementById("uname").value;
+  alert(uname);
+  var pass = document.getElementById("pass").value;
+  alert(pass);
+  //call API, save these in the DB
 }
 
 function selectAdditionalDegree(){
@@ -50,6 +68,15 @@ function selectAdditionalDegree(){
   alert(additionalDegree);
 
 }
+
+
+//get value from major check box
+//store in variable
+//print in onto the website
+//then add api calls to get classes and use jquery to add checkboxes
+
+
+
 
 function deptSubmit() {
   // alert("in deptSubmit!");
@@ -85,30 +112,33 @@ function deptSubmit() {
    alert('CORS not supported');
    return;
  }
+checkBoxes = new Array();
  // Response handlers.
- checkBoxes = new Array();
-
   xhr.onload = function() {
-    alert("in function");
     $('#select-classes-div').empty();
     var jsonResponse = JSON.parse(xhr.responseText);
     var length = jsonResponse.length;
       alert("length= " +length);
     var i = 0;
+    var displayLength = 0;
+
+    //checkBoxes = new Array();
+    ///create array
     for(i; i < length; i++){
+      if(displayLength==5){
+        $('#select-classes-div').append('<br>');
+        displayLength=0;
+      }
       var prog = jsonResponse[i].program;
       var num = jsonResponse[i].number;
       var id = prog + "-" + num;
       var checkbox = '<input onclick="" id="' + prog + '-' + num + '" class="menu" type="checkbox" name="dept" value="check"> '+ prog + ' ' + num + '';
       $('#select-classes-div').append(checkbox);
-       checkBoxes[i] = id;
+      //add check box to array
+      checkBoxes[i] = id;
       displayLength++;
      }
-
-    alert(jsonResponse);
-
-    // courses = jsonResponse.Courses;
-    // alert(courses);
+     alert(checkBoxes);
   };
 
   xhr.onerror = function() {
@@ -116,9 +146,6 @@ function deptSubmit() {
   };
 
   xhr.send();
-
-
-
 
   var sems_input = '<input id="sems-left" type=number max=7 minimum=1 placeholder="Enter Number">';
   $("#sems-left-input-div").empty();
@@ -133,24 +160,9 @@ function deptSubmit() {
 function degreeFinder(){
   alert("in degreeFinder!");
   var sems_left = document.getElementById("sems-left").value;
-  //get the id's of all of the checkboxes that are checked
-
-  var checkedArray = new Array();
-  var i = 0;
-  var checkCount = 0;
-  for(i; i< checkBoxes.length; i++){
-    var box_checked = document.getElementById(checkBoxes[i]).checked;
-    if(box_checked){
-      checkedArray[checkCount] = checkBoxes[i];
-      checkCount++;
-    }
-  }
-  alert("checkedArray= " + checkedArray);
-
-
   window.location.replace("file:///Users/lahixson/Documents/GitHub/MajorPlanner/LidaFinalProject/results.html");
   alert(sems_left);
-
+  alert(checkBoxes);
 }
 
 function createCORSRequest(method, url) {

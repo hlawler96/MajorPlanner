@@ -1,10 +1,14 @@
+
 $(document).ready(function () {
   console.log("The js is hooked up");
-  // alert(localStorage.sessionId)
+  sessionId=  window.localStorage.getItem('sessionId');
+  alert("about to try populate");
+  populateCoursesTaken();
 });
 
 
-
+function populateCoursesTaken(){
+alert("first line of populate");
 API_URL = "http://ec2-18-217-72-185.us-east-2.compute.amazonaws.com:8080/PossiblePrograms/?sessionId=" + sessionId;
 alert(API_URL);
 var xhr = createCORSRequest('GET', API_URL);
@@ -16,11 +20,11 @@ if (!xhr) {
 // Response handlers.
 xhr.onload = function() {
   var jsonResponse = JSON.parse(xhr.responseText);
-  for(var i=0; i<jsonResponse.length; i++;){
-  dept = jsonResponse.strictRemainingCourses[i].dept;
-  num = jsonResponse.strictRemainingCourses[i].number;
+  for(var i = 0; i < jsonResponse.strictRemainingCourses.length; i++){
+  var dept = jsonResponse.strictRemainingCourses[i].program;
+  var num = jsonResponse.strictRemainingCourses[i].number;
+  $('#classesRemaining').append("<p class = 'remainingCourse'>" + dept + " " + num + "</p>");
 }
-  alert(courses);
 };
 
 xhr.onerror = function() {
@@ -28,3 +32,4 @@ xhr.onerror = function() {
 };
 
 xhr.send();
+}

@@ -1,6 +1,14 @@
 $(document).ready(function () {
   console.log("The js is hooked up");
-  // alert(localStorage.sessionId)
+  if(typeof(Storage)!=="undefined"){
+    if(window.localStorage.getItem('sessionId')){
+       alert(window.localStorage.getItem('sessionId'))
+    }else {
+      alert("NO Session Id");
+    }
+  } else{
+  alert("storage not supported by browser");
+  }
 });
 
 
@@ -11,22 +19,30 @@ $(document).ready(function () {
 function loginSubmit() {
 
   uname = document.getElementById("uname").value;
-
   var pass = document.getElementById("pass").value;
 
 
   API_URL = "http://ec2-18-217-72-185.us-east-2.compute.amazonaws.com:8080/Login/?username=" + uname + "&password=" + pass;
   sessionId = "";
   var xhr = createCORSRequest('GET', API_URL);
+
   xhr.responseType = 'text';
  if (!xhr) {
    alert('CORS not supported');
    return;
  }
- // Response handlers.
+
+ // Response handlers
   xhr.onload = function() {
     var jsonResponse = JSON.parse(xhr.responseText);
-    sessionStorage.setItem("variableName","test");
+    window.localStorage.setItem('sessionId',jsonResponse.sessionId);
+    if( jsonResponse.sessionId == ""){
+      alert("Not a valid login");
+    }else {
+      alert(window.localStorage.getItem('sessionId'));
+
+    }
+
   };
 
   xhr.onerror = function() {

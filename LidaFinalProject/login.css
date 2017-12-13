@@ -1,7 +1,7 @@
 .loginForm{
   background-color:	#C4B7C1;
   width: 800px;
-  height:600px;
+  height:auto;
   margin:auto;
   margin-top: 14em;
   border-radius: 10px;
@@ -10,16 +10,22 @@
   height: 20px;
 }
 .table{
-  border-radius: 5px;
+  border-radius: 50px;
       border: 2px dashed;
-      padding: 20px;
+      padding: 200px;
       width: 500px;
+      background-color: #000000;
+      color: #000000;
 
+    }
+    #coursesToTake{
+      justify-content: center;
+      margin-left: 50px;
     }
 #log2{
   background-color:	#569ba9;
   width: 600px;
-  height:500px;
+  height: auto;
   margin: auto;
   border-radius: 10px;
 }

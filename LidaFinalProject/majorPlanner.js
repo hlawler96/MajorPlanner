@@ -9,58 +9,41 @@ $(document).ready(function () {
   } else{
   alert("storage not supported by browser");
   }
+  var fun = function(e){
+      if(e.keyCode==13) loginSubmit();
+  }
+  $('#uname').keypress(fun);
+  $('#pass').keypress(fun);
 });
 
-
-//get values for username and password from website
-//store them in variables
-//print them to console
-//then add api calls to get them and check them
 function loginSubmit() {
-
   uname = document.getElementById("uname").value;
   var pass = document.getElementById("pass").value;
-
-
   API_URL = "http://ec2-18-217-72-185.us-east-2.compute.amazonaws.com:8080/Login/?username=" + uname + "&password=" + pass;
   sessionId = "";
   var xhr = createCORSRequest('GET', API_URL);
-
   xhr.responseType = 'text';
  if (!xhr) {
    alert('CORS not supported');
    return;
  }
-
  // Response handlers
   xhr.onload = function() {
     var jsonResponse = JSON.parse(xhr.responseText);
+    alert(jsonResponse.sessionId);
     window.localStorage.setItem('sessionId',jsonResponse.sessionId);
     if( jsonResponse.sessionId == ""){
       alert("Not a valid login");
     }else {
       alert(window.localStorage.getItem('sessionId'));
-
     }
-
+     window.location.href = "results.html";
   };
-
   xhr.onerror = function() {
       alert('FAILURE');
   };
-
   xhr.send();
 
-  //call API, check if they match
-}
-
-function registerSubmit() {
-  alert("in registerSubmit!");
-  uname = document.getElementById("uname").value;
-  alert(uname);
-  var pass = document.getElementById("pass").value;
-  alert(pass);
-  //call API, save these in the DB
 }
 
 function selectAdditionalDegree(){
@@ -68,15 +51,6 @@ function selectAdditionalDegree(){
   alert(additionalDegree);
 
 }
-
-
-//get value from major check box
-//store in variable
-//print in onto the website
-//then add api calls to get classes and use jquery to add checkboxes
-
-
-
 
 function deptSubmit() {
   // alert("in deptSubmit!");

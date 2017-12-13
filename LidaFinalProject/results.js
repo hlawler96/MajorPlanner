@@ -17,10 +17,13 @@ if (!xhr) {
 xhr.onload = function() {
   var jsonResponse = JSON.parse(xhr.responseText);
   for(var i=0; i<jsonResponse.length; i++;){
-  dept = jsonResponse.strictRemainingCourses[i].dept;
-  num = jsonResponse.strictRemainingCourses[i].number;
+    dept = jsonResponse.strictRemainingCourses[i].dept;
+    num = jsonResponse.strictRemainingCourses[i].number;
+  
+    $('#classesRemaining').append("<p>" +dept + num + "</p>");
+
 }
-  alert(courses);
+  alert(dept + " " + num);
 };
 
 xhr.onerror = function() {
